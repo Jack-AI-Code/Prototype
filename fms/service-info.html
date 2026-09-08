@@ -1,0 +1,2779 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FMS - 订单创建</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<!-- FMS_RULE_CONFIG_START：由 Excel 转换工具更新，请勿手工修改本区块 -->
+<script>
+/* Generated from FMS business configuration Excel. Do not edit manually. */
+window.FMS_RULE_CONFIG=(function(c){c.standardServiceRules.forEach(function(r){r.services=r.services.map(function(s){return {serviceCode:s[0],stageCode:s[1],required:!!s[2],dependencyServiceCode:s[3],order:s[4]};});});return c;})({"schemaVersion":"1.1.0","dictionaries":{"logisticsTypes":[{"code":"OCEAN","name":"海运"},{"code":"LAND","name":"陆运"},{"code":"AIR","name":"空运"},{"code":"EXPRESS","name":"国际快递"}],"services":[{"code":"origin_trailer","name":"拖车","stageCode":"origin"},{"code":"origin_warehouse","name":"库内服务","stageCode":"origin"},{"code":"origin_storage","name":"仓储/货物暂存","stageCode":"origin"},{"code":"export_customs_declaration","name":"出口报关及申报","stageCode":"origin"},{"code":"ocean_freight","name":"国际海运","stageCode":"intl"},{"code":"rail_transport","name":"铁路运输","stageCode":"intl"},{"code":"import_customs_clearance","name":"申报及进口清关","stageCode":"destination"},{"code":"dest_trailer","name":"拖车","stageCode":"destination"},{"code":"dest_loading","name":"装箱服务","stageCode":"destination"},{"code":"dest_storage","name":"仓储/货物暂存","stageCode":"destination"},{"code":"final_delivery","name":"送货上门","stageCode":"destination"},{"code":"cargo_insurance","name":"货运保险代理","stageCode":"vas"},{"code":"documentation_service","name":"单证服务","stageCode":"vas"},{"code":"destination_tax_payment","name":"目的港缴税代办","stageCode":"vas"}]},"standardServiceRules":[{"ruleId":"OCEAN_FCL_RULE_01","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["Door-Door","CFS-Door"],"services":[["origin_trailer","origin",1,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["dest_trailer","destination",1,"import_customs_clearance",60],["import_customs_clearance","destination",1,null,70],["dest_loading","destination",0,"import_customs_clearance",80],["dest_storage","destination",0,"import_customs_clearance",90],["final_delivery","destination",0,"import_customs_clearance",100],["cargo_insurance","vas",0,null,110],["documentation_service","vas",0,null,120],["destination_tax_payment","vas",0,null,130]]},{"ruleId":"OCEAN_FCL_RULE_02","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["Door-CFS","CFS-CFS"],"services":[["origin_trailer","origin",1,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["dest_trailer","destination",1,"import_customs_clearance",60],["import_customs_clearance","destination",1,null,70],["dest_loading","destination",0,"import_customs_clearance",80],["dest_storage","destination",0,"import_customs_clearance",90],["cargo_insurance","vas",0,null,100],["documentation_service","vas",0,null,110],["destination_tax_payment","vas",0,null,120]]},{"ruleId":"OCEAN_FCL_RULE_03","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["Door-RAMP","CFS-RAMP"],"services":[["origin_trailer","origin",1,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["rail_transport","intl",0,null,60],["import_customs_clearance","destination",0,null,70],["dest_trailer","destination",0,null,80],["cargo_insurance","vas",0,null,90],["documentation_service","vas",0,null,100],["destination_tax_payment","vas",0,null,110]]},{"ruleId":"OCEAN_FCL_RULE_04","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["Door-CY","CFS-CY"],"services":[["origin_trailer","origin",1,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["import_customs_clearance","destination",0,null,60],["dest_trailer","destination",0,null,70],["cargo_insurance","vas",0,null,80],["documentation_service","vas",0,null,90],["destination_tax_payment","vas",0,null,100]]},{"ruleId":"OCEAN_FCL_RULE_05","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["RAMP-Door"],"services":[["origin_trailer","origin",0,null,10],["export_customs_declaration","origin",0,null,20],["ocean_freight","intl",1,null,30],["rail_transport","intl",0,null,40],["dest_trailer","destination",1,"import_customs_clearance",50],["import_customs_clearance","destination",1,null,60],["dest_loading","destination",0,"import_customs_clearance",70],["dest_storage","destination",0,"import_customs_clearance",80],["final_delivery","destination",0,"import_customs_clearance",90],["cargo_insurance","vas",0,null,100],["documentation_service","vas",0,null,110],["destination_tax_payment","vas",0,null,120]]},{"ruleId":"OCEAN_FCL_RULE_06","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["RAMP-CFS"],"services":[["origin_trailer","origin",0,null,10],["export_customs_declaration","origin",0,null,20],["ocean_freight","intl",1,null,30],["rail_transport","intl",0,null,40],["dest_trailer","destination",1,"import_customs_clearance",50],["import_customs_clearance","destination",1,null,60],["dest_loading","destination",0,"import_customs_clearance",70],["dest_storage","destination",0,"import_customs_clearance",80],["cargo_insurance","vas",0,null,90],["documentation_service","vas",0,null,100],["destination_tax_payment","vas",0,null,110]]},{"ruleId":"OCEAN_FCL_RULE_07","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["RAMP-RAMP","RAMP-CY","CY-RAMP"],"services":[["origin_trailer","origin",0,null,10],["export_customs_declaration","origin",0,null,20],["ocean_freight","intl",1,null,30],["rail_transport","intl",0,null,40],["import_customs_clearance","destination",0,null,50],["dest_trailer","destination",0,null,60],["cargo_insurance","vas",0,null,70],["documentation_service","vas",0,null,80],["destination_tax_payment","vas",0,null,90]]},{"ruleId":"OCEAN_FCL_RULE_08","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["CY-Door"],"services":[["origin_trailer","origin",0,null,10],["export_customs_declaration","origin",0,null,20],["ocean_freight","intl",1,null,30],["dest_trailer","destination",1,"import_customs_clearance",40],["import_customs_clearance","destination",1,null,50],["dest_loading","destination",0,"import_customs_clearance",60],["dest_storage","destination",0,"import_customs_clearance",70],["final_delivery","destination",0,"import_customs_clearance",80],["cargo_insurance","vas",0,null,90],["documentation_service","vas",0,null,100],["destination_tax_payment","vas",0,null,110]]},{"ruleId":"OCEAN_FCL_RULE_09","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["CY-CFS"],"services":[["origin_trailer","origin",0,null,10],["export_customs_declaration","origin",0,null,20],["ocean_freight","intl",1,null,30],["dest_trailer","destination",1,"import_customs_clearance",40],["import_customs_clearance","destination",1,null,50],["dest_loading","destination",0,"import_customs_clearance",60],["dest_storage","destination",0,"import_customs_clearance",70],["cargo_insurance","vas",0,null,80],["documentation_service","vas",0,null,90],["destination_tax_payment","vas",0,null,100]]},{"ruleId":"OCEAN_FCL_RULE_10","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_FCL","shippingTermCodes":["CY-CY"],"services":[["origin_trailer","origin",0,null,10],["export_customs_declaration","origin",0,null,20],["ocean_freight","intl",1,null,30],["import_customs_clearance","destination",0,null,40],["dest_trailer","destination",0,null,50],["cargo_insurance","vas",0,null,60],["documentation_service","vas",0,null,70],["destination_tax_payment","vas",0,null,80]]},{"ruleId":"OCEAN_LCL_RULE_01","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_LCL","shippingTermCodes":["Door-Door"],"services":[["origin_trailer","origin",1,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["final_delivery","destination",1,"import_customs_clearance",60],["import_customs_clearance","destination",1,null,70],["dest_loading","destination",0,"import_customs_clearance",80],["dest_storage","destination",0,"import_customs_clearance",90],["cargo_insurance","vas",0,null,100],["documentation_service","vas",0,null,110],["destination_tax_payment","vas",0,null,120]]},{"ruleId":"OCEAN_LCL_RULE_02","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_LCL","shippingTermCodes":["Door-CFS"],"services":[["origin_trailer","origin",1,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["import_customs_clearance","destination",0,null,60],["final_delivery","destination",0,"import_customs_clearance",70],["dest_storage","destination",0,"import_customs_clearance",80],["cargo_insurance","vas",0,null,90],["documentation_service","vas",0,null,100],["destination_tax_payment","vas",0,null,110]]},{"ruleId":"OCEAN_LCL_RULE_03","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_LCL","shippingTermCodes":["CFS-Door"],"services":[["origin_trailer","origin",0,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["final_delivery","destination",1,"import_customs_clearance",60],["import_customs_clearance","destination",1,null,70],["dest_loading","destination",0,"import_customs_clearance",80],["dest_storage","destination",0,"import_customs_clearance",90],["cargo_insurance","vas",0,null,100],["documentation_service","vas",0,null,110],["destination_tax_payment","vas",0,null,120]]},{"ruleId":"OCEAN_LCL_RULE_04","logisticsTypeCode":"OCEAN","transportModeCode":"OCEAN_LCL","shippingTermCodes":["CFS-CFS"],"services":[["origin_trailer","origin",0,null,10],["origin_warehouse","origin",0,null,20],["origin_storage","origin",0,null,30],["export_customs_declaration","origin",0,null,40],["ocean_freight","intl",1,null,50],["import_customs_clearance","destination",0,null,60],["final_delivery","destination",0,"import_customs_clearance",70],["dest_storage","destination",0,"import_customs_clearance",80],["cargo_insurance","vas",0,null,90],["documentation_service","vas",0,null,100],["destination_tax_payment","vas",0,null,110]]}],"sectionRules":{"standard":[{"ruleId":"STANDARD_SECTION_RULE_01","logisticsTypeCodes":["OCEAN"],"sections":[{"sectionCode":"customerInfo","order":10},{"sectionCode":"schedule","order":20},{"sectionCode":"cargoContainer","order":30},{"sectionCode":"documentationBooking","order":40},{"sectionCode":"responsibilityRemark","order":50}]}],"selfServiceMappings":[{"serviceCode":"origin_trailer","sectionCode":"originTrailer"},{"serviceCode":"origin_warehouse","sectionCode":"originWarehouse"},{"serviceCode":"origin_storage","sectionCode":"originStorage"},{"serviceCode":"export_customs_declaration","sectionCode":"exportCustoms"},{"serviceCode":"ocean_freight","sectionCode":"internationalTransport"},{"serviceCode":"rail_transport","sectionCode":"internationalTransport"},{"serviceCode":"import_customs_clearance","sectionCode":"importCustoms"},{"serviceCode":"dest_trailer","sectionCode":"destTrailer"},{"serviceCode":"dest_loading","sectionCode":"destLoading"},{"serviceCode":"dest_storage","sectionCode":"destStorage"},{"serviceCode":"final_delivery","sectionCode":"finalDelivery"},{"serviceCode":"cargo_insurance","sectionCode":"insurance"},{"serviceCode":"documentation_service","sectionCode":"documentation"},{"serviceCode":"destination_tax_payment","sectionCode":"destinationTax"}]},"selfServiceRules":{"allowedCombinations":[{"ruleId":"self_01","serviceCodes":["import_customs_clearance"]},{"ruleId":"self_02","serviceCodes":["dest_trailer","import_customs_clearance"]}],"switchToStandard":[{"ruleId":"switch_01","whenContainsServiceCodes":["ocean_freight"],"targetLogisticsTypeCode":"OCEAN"}]},"serviceOptions":[{"serviceCode":"final_delivery","serviceName":"送货上门","stageCode":"destination","serviceOrder":10,"groups":[{"optionCode":"delivery_method","label":"派送方式","type":"single","required":true,"order":10,"choices":[{"value":"direct_delivery","label":"直送","order":10},{"value":"split_delivery","label":"拆送","order":20},{"value":"flexible_delivery","label":"可拆可直","order":30}]}]},{"serviceCode":"cargo_insurance","serviceName":"货运保险代理","stageCode":"vas","serviceOrder":11,"groups":[{"optionCode":"insurance_scope","label":"投保范围","type":"single","required":true,"order":10,"choices":[{"value":"to_port","label":"到港","order":10},{"value":"to_warehouse","label":"到仓","order":20},{"value":"to_shelf","label":"上架","order":30},{"value":"customer_self_insured","label":"客户自投","order":40}]}]}]});
+window.FMS_PAGE_ADAPTER = {"logisticsTypeCodes":{"OCEAN":"ocean","LAND":"land","AIR":"air","EXPRESS":"express"},"transportModeCodes":{"OCEAN_FCL":"FCL","OCEAN_LCL":"LCL"},"standardServiceIds":{"origin_trailer":"trailer","origin_warehouse":"ows","origin_storage":"owh","export_customs_declaration":"exc","ocean_freight":"ocean_freight","rail_transport":"rail_freight","import_customs_clearance":"imc","dest_trailer":"dtrailer","dest_loading":"dload","dest_storage":"dwh","final_delivery":"dlv","cargo_insurance":"ins","documentation_service":"doc","destination_tax_payment":"bond"},"selfServiceIds":{"origin_trailer":"trailer","origin_warehouse":"ows","origin_storage":"owh","export_customs_declaration":"exc","ocean_freight":"ocean_freight","rail_transport":"rail_freight","import_customs_clearance":"imc","dest_trailer":"d_trailer","dest_loading":"d_load","dest_storage":"dwh","final_delivery":"dlv","cargo_insurance":"ins","documentation_service":"doc","destination_tax_payment":"bond"},"standardSectionIds":{"customerInfo":"sec2","schedule":"sec3","cargoContainer":"sec4","documentationBooking":"sec5","responsibilityRemark":"sec6"},"selfSectionIds":{"originTrailer":"floorOTrailer","originWarehouse":"floorInWh","originStorage":"floorOStorage","exportCustoms":"floorExport","internationalTransport":"floorTransport","importCustoms":"floorImport","destTrailer":"floorDTrailer","destLoading":"floorLoad","destStorage":"floorDStorage","finalDelivery":"floorDelivery","insurance":"floorInsurance","documentation":"floorDoc","destinationTax":"floorTax"}};
+</script>
+<!-- FMS_RULE_CONFIG_END -->
+<style>
+:root{
+  /* 全局界面缩放：1 为基准，数值越小越紧凑、越大越宽松；后续只需修改这一项 */
+  --ui-scale:.95;
+  --primary:#1e2d4f;--accent:#e8620c;--ck-color:#2d3c65;--border:#dcdfe6;--bg:#f0f2f5;--text:#303133;--text-sec:#909399;--white:#fff;--success:#67c23a;--danger:#f56c6c;--warning:#e6a23c;--radius:3px;
+}
+html{zoom:var(--ui-scale);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;font-size:12px;color:var(--text);background:var(--bg);line-height:1.45;}
+
+/* TopBar */
+.topbar{height:44px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;justify-content:space-between;position:fixed;top:0;left:0;right:0;z-index:100;}
+.logo-area{display:flex;align-items:center;gap:6px;}
+.logo-brand{display:flex;align-items:center;gap:4px;}
+.logo-brand .brand-icon{font-size:20px;font-weight:800;color:var(--primary);}
+.logo-brand .brand-name{font-size:14px;font-weight:700;color:var(--primary);}
+.logo-brand .brand-sub{font-size:9px;color:var(--text-sec);display:block;line-height:1;margin-top:-1px;}
+.logo-sep{width:1px;height:24px;background:var(--border);margin:0 10px;}
+.logo-fms{font-size:18px;font-weight:700;color:var(--text);letter-spacing:2px;}
+.top-right{display:flex;align-items:center;gap:10px;}
+.top-right select{border:1px solid var(--border);padding:4px 10px;border-radius:var(--radius);font-size:12px;height:30px;}
+.top-icon{width:32px;height:32px;border-radius:4px;border:1px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#606266;}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+
+/* Layout */
+.layout{display:flex;padding-top:44px;height:100vh;overflow:hidden;}
+.sidebar{width:56px;background:var(--primary);position:fixed;top:44px;left:0;bottom:0;display:flex;flex-direction:column;align-items:center;padding-top:3px;z-index:90;}
+.nav-item{width:48px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;border-radius:4px;cursor:pointer;color:rgba(255,255,255,.5);font-size:10px;text-decoration:none;margin:1px 0;}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.08);}
+.nav-item.active{color:var(--accent);background:rgba(232,98,12,.1);}
+.nav-item .ni{font-size:18px;margin-bottom:1px;}
+.main-wrap{margin-left:56px;flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+.tab-bar{background:var(--white);border-bottom:1px solid var(--border);padding:0 14px;display:flex;height:32px;align-items:stretch;flex-shrink:0;z-index:80;}
+.tab-it{padding:0 14px;font-size:12px;color:var(--text-sec);cursor:pointer;display:flex;align-items:center;gap:5px;border-bottom:2px solid transparent;}
+.tab-it.active{color:var(--text);font-weight:500;border-bottom-color:var(--accent);}
+.tab-it .x{font-size:14px;color:#ccc;margin-left:4px;cursor:pointer;}
+
+/* Step Nav */
+.step-nav{background:var(--primary);flex-shrink:0;z-index:79;display:flex;align-items:center;padding:0 14px;height:34px;gap:0;box-shadow:0 2px 6px rgba(0,0,0,.12);}
+.sn-title{color:#fff;font-size:12px;font-weight:600;margin-right:14px;white-space:nowrap;}
+.step-item{display:flex;align-items:center;gap:4px;padding:0 10px;height:34px;cursor:pointer;color:rgba(255,255,255,.5);font-size:11px;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s;}
+.step-item:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.06);}
+.step-item.active{color:#fff;border-bottom-color:var(--accent);}
+.step-item.done{color:rgba(255,255,255,.7);}
+.step-num{width:18px;height:18px;border-radius:50%;border:1.5px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;}
+.step-item.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff;}
+.step-item.done .step-num{background:var(--success);border-color:var(--success);color:#fff;}
+.step-connector{width:14px;height:1px;background:rgba(255,255,255,.2);flex-shrink:0;}
+
+/* Doc Switcher */
+.doc-switcher{display:flex;gap:2px;background:rgba(255,255,255,.1);border-radius:4px;padding:2px;margin-left:4px;}
+.ds-btn{padding:3px 14px;border-radius:3px;font-size:12px;color:rgba(255,255,255,.6);cursor:pointer;white-space:nowrap;transition:all .15s;user-select:none;}
+.ds-btn:hover{color:rgba(255,255,255,.9);}
+.ds-btn.active{background:var(--accent);color:#fff;font-weight:500;}
+#navSteps{display:flex;align-items:center;}
+.biz-hide{display:none!important;}
+
+/* Split container */
+.split-container{display:flex;flex:1;min-height:0;overflow:hidden;margin-bottom:50px;}
+.content{padding:8px 12px 10px;flex:1;overflow-y:auto;min-width:400px;overflow-x:hidden;}
+
+/* Section */
+.section{background:var(--white);border-radius:var(--radius);border:1px solid var(--border);margin-bottom:8px;min-width:0;}
+.sec-hd{padding:9px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid #ebeef5;background:#fafbfc;border-radius:var(--radius) var(--radius) 0 0;cursor:pointer;user-select:none;}
+.sec-hd .sec-dot{width:4px;height:18px;background:var(--accent);border-radius:2px;}
+.sec-hd h3{font-size:14px;font-weight:600;flex-shrink:0;}
+.sec-summary{flex:1;min-width:0;margin-left:10px;color:#7d8594;font-size:11px;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sec-summary.empty{color:#b8bdc7;}
+.sec-hd .tgl{font-size:14px;color:#999;transition:transform .2s;}
+.sec-hd.collapsed .tgl{transform:rotate(-90deg);}
+.sec-bd{padding:12px 0 6px;}
+.sec-bd.collapsed{display:none;}
+
+/* 通用行 */
+.row{display:flex;align-items:center;padding:0 16px;min-height:34px;margin-bottom:1px;}
+.row .rl{min-width:96px;text-align:right;padding-right:10px;font-size:12px;color:var(--text);white-space:nowrap;flex-shrink:0;}
+.rq{color:#f56c6c;margin-right:2px;font-weight:700;font-size:14px;}
+.row .rv{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1;}
+.field-group{display:flex;align-items:center;gap:0;flex-shrink:0;}
+.field-group .rl{min-width:auto;padding-left:28px;}
+.row-sep{border-top:1px solid #ebeef5;margin:8px 20px;}
+
+/* 三列 / 四列 */
+.row-3col{display:flex;align-items:center;padding:0 16px;min-height:36px;margin-bottom:3px;gap:18px;}
+.col-3{flex:1;display:flex;align-items:center;min-width:0;overflow:hidden;}
+.col-3 .rl{min-width:86px;max-width:86px;text-align:right;padding-right:8px;font-size:12px;color:var(--text);white-space:nowrap;flex-shrink:0;}
+.col-3 .fc,.col-3 .fc-cnt{flex:1;min-width:0;}
+.col-3 .fc{width:100%;}
+
+.fg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px 12px;padding:0 16px;}
+.fi{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.fi.s2{grid-column:span 2;}.fi.s3{grid-column:span 3;}.fi.s4{grid-column:span 4;}
+.fl{font-size:12px;color:var(--text-sec);display:flex;align-items:center;gap:2px;}
+.fl .rq{color:var(--danger);font-weight:700;}
+.dv{grid-column:1/-1;border-top:1px dashed #eee;margin:2px 0;}
+.sub-label{font-size:12px;font-weight:600;color:var(--primary);margin-bottom:5px;display:flex;align-items:center;gap:4px;padding:0 16px;}
+
+/* 输入框 */
+.fc{height:30px;border:1px solid var(--border);border-radius:var(--radius);padding:0 9px;font-size:12px;color:var(--text);outline:none;background:var(--white);width:100%;}
+.fc:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(232,98,12,.08);}
+.fc:disabled{background:#f5f5f5;color:#aaa;}
+select.fc{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23909399' d='M5 6L0 0h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;cursor:pointer;}
+textarea.fc{height:auto;min-height:46px;padding:4px 9px;resize:vertical;line-height:1.4;}
+.fc-cnt{position:relative;display:flex;}.fc-cnt .cnt{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--text-sec);}.fc-cnt .fc{padding-right:55px;flex:1;min-width:0;}
+.ig{display:flex;gap:6px;align-items:stretch;}
+.ig .fc{flex:1;}
+.ig .ba{height:30px;padding:0 10px;border:1px solid var(--border);border-radius:var(--radius);background:#fafafa;cursor:pointer;font-size:11px;color:var(--text-sec);white-space:nowrap;display:flex;align-items:center;}
+.ig .ba:hover{background:#f0f0f0;}
+.ip{display:flex;gap:6px;align-items:center;}.ip .fc{flex:1;}
+.cc{font-size:10px;color:#ccc;text-align:right;margin-top:2px;}
+
+/* Checkbox / Radio */
+.ck{display:inline-flex;align-items:center;gap:4px;cursor:pointer;font-size:12px;color:var(--text);user-select:none;margin-right:10px;white-space:nowrap;}
+.ck input[type="checkbox"],.ck input[type="radio"]{width:15px;height:15px;accent-color:var(--ck-color);cursor:pointer;margin:0;}
+.cb{display:flex;align-items:center;gap:4px;height:32px;font-size:12px;cursor:pointer;}
+.cb input{width:14px;height:14px;accent-color:var(--primary);}
+
+/* 当事方卡片 */
+.pcards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:0 16px;}
+.pcard{border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;background:#fafbfc;}
+.pcard .ptitle{font-size:12px;font-weight:600;color:var(--primary);margin-bottom:6px;}
+.pcard .ptitle .rq{color:var(--danger);}
+.pcard select,.pcard textarea{width:100%;}
+.pcard select{margin-bottom:6px;}
+
+/* 表格 */
+.ct{width:100%;border-collapse:collapse;font-size:12px;margin:0 0 4px;}
+.ct th{background:#f5f6f8;border:1px solid #e8e8e8;padding:5px 6px;font-weight:600;text-align:center;color:var(--text-sec);font-size:11px;}
+.ct td{border:1px solid #e8e8e8;padding:2px 4px;text-align:center;}
+.ct input,.ct select{border:none;background:transparent;text-align:center;font-size:12px;width:100%;outline:none;height:26px;}
+.ct input:focus{background:rgba(232,98,12,.06);}
+.ct tfoot td{background:#f5f6f8;font-weight:600;}
+.abtn{margin-top:4px;background:none;border:1px dashed #ccc;color:var(--text-sec);padding:4px 12px;border-radius:3px;cursor:pointer;font-size:12px;}
+.abtn:hover{border-color:var(--accent);color:var(--accent);}
+.db{color:#ccc;cursor:pointer;background:none;border:none;font-size:14px;}.db:hover{color:var(--danger);}
+.hr{display:flex;gap:6px;align-items:center;margin-bottom:4px;}.hr input{flex:1;}
+.sum{margin:6px 16px 0;padding:6px 10px;background:rgba(232,98,12,.06);border-radius:3px;font-size:11px;display:flex;gap:20px;color:var(--primary);}
+.sum strong{color:var(--text);}
+.tag{display:inline-flex;align-items:center;gap:3px;background:rgba(232,98,12,.08);color:var(--accent);padding:3px 9px;border-radius:3px;font-size:12px;}
+.tag .tx{cursor:pointer;font-size:13px;color:#ccc;}.tag .tx:hover{color:var(--danger);}
+
+/* 日期 */
+input[type="date"].fc,input[type="datetime-local"].fc{cursor:pointer;font-size:12px;color:var(--text);position:relative;}
+input[type="date"].fc::-webkit-calendar-picker-indicator,input[type="datetime-local"].fc::-webkit-calendar-picker-indicator{position:absolute;top:0;left:0;right:0;bottom:0;width:100%;height:100%;opacity:0;cursor:pointer;}
+
+/* Tip */
+.tip{position:relative;display:inline-flex;}
+.tip .ti{width:12px;height:12px;border-radius:50%;background:#e0e0e0;color:#888;font-size:9px;display:flex;align-items:center;justify-content:center;cursor:help;margin-left:3px;}
+.tip .tt{display:none;position:absolute;bottom:100%;left:0;background:#333;color:#fff;padding:4px 8px;border-radius:3px;font-size:10px;white-space:nowrap;z-index:10;margin-bottom:3px;}
+.tip:hover .tt{display:block;}
+
+/* 中转行 */
+.ts-row{display:grid;grid-template-columns:1.2fr 1.5fr .8fr .8fr 28px;gap:6px;align-items:end;margin-bottom:4px;padding:6px 8px;background:#fafbfc;border:1px solid #eee;border-radius:3px;}
+
+/* 备注 */
+.note-item{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;background:#fafbfc;border:1px solid #eee;border-radius:3px;margin-bottom:4px;}
+.note-item .note-body{flex:1;}
+.note-item .note-text{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:3px;}
+.note-item .note-meta{font-size:11px;color:var(--text-sec);}
+.note-item .note-icon{width:28px;height:28px;border-radius:50%;background:rgba(232,98,12,.08);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.note-item.done{opacity:.65;}.note-item.done .note-text{text-decoration:line-through;color:var(--text-sec);}
+.note-item.done .note-icon{background:#e8f5e9;color:var(--success);}
+.note-status{display:inline-flex;align-items:center;gap:2px;font-size:10px;padding:1px 6px;border-radius:8px;font-weight:500;margin-right:4px;}
+.note-status.s-pending{background:#fff3e0;color:#e65100;}
+.note-status.s-progress{background:#e3f2fd;color:#1565c0;}
+.note-status.s-done{background:#e8f5e9;color:#2e7d32;}
+.note-actions{display:flex;gap:6px;margin-top:4px;flex-wrap:wrap;}
+.note-act{font-size:11px;cursor:pointer;padding:2px 7px;border-radius:3px;border:1px solid var(--border);background:#fff;color:var(--text-sec);transition:all .1s;}
+.note-act:hover{border-color:var(--primary);color:var(--primary);}
+.note-act.act-done:hover{border-color:var(--success);color:var(--success);background:#e8f5e9;}
+.note-act.act-del:hover{border-color:var(--danger);color:var(--danger);}
+.note-input-wrap{display:flex;gap:6px;align-items:stretch;margin-top:6px;padding:0 20px;}
+.note-input-wrap textarea{flex:1;min-height:32px;resize:none;}
+.note-input-wrap .btn-sm{height:32px;padding:0 14px;border-radius:3px;font-size:12px;cursor:pointer;border:1px solid var(--border);background:var(--accent);color:#fff;white-space:nowrap;}
+.note-input-wrap .btn-sm:hover{background:#d5580a;}
+
+/* 或分隔 */
+.or-line{display:flex;align-items:center;gap:8px;margin:4px 20px;color:var(--text-sec);font-size:11px;white-space:nowrap;}
+.or-line::before,.or-line::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Type/Mode chips (from booking, adapted to v3 colors) */
+.type-chips{display:flex;gap:6px;flex-wrap:wrap;}
+.type-tail{display:inline-flex;align-items:center;gap:8px;flex-shrink:0;white-space:nowrap;}
+.type-tail .ck{margin-right:0;}
+.type-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);border-radius:var(--radius);padding:5px 14px;cursor:pointer;font-size:12px;color:var(--text-sec);transition:all .12s;background:#fff;}
+.type-chip:hover{border-color:var(--primary);color:var(--text);}
+.type-chip.selected{border-color:var(--accent);background:rgba(232,98,12,.08);color:var(--accent);font-weight:600;}
+.type-chip .tc-icon{font-size:15px;}
+.mode-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.mode-chip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);border-radius:var(--radius);padding:4px 12px;cursor:pointer;font-size:11px;color:var(--text-sec);transition:all .12s;background:#fff;}
+.mode-chip:hover{border-color:var(--primary);color:var(--text);}
+.mode-chip.selected{border-color:var(--accent);background:rgba(232,98,12,.08);color:var(--accent);font-weight:600;}
+.mode-chip .mc-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;transition:all .1s;}
+.mode-chip.selected .mc-dot{border-color:var(--accent);background:var(--accent);box-shadow:inset 0 0 0 1.5px #fff;}
+
+/* Terms */
+.term-chips{display:inline-flex;gap:4px;flex-wrap:wrap;}
+.term-chip{display:inline-block;border:1px solid var(--border);border-radius:3px;padding:3px 9px;cursor:pointer;font-size:11px;color:var(--text-sec);transition:all .1s;}
+.term-chip.disabled{opacity:.4;cursor:not-allowed;background:#f5f5f5;color:#aaa;text-decoration:line-through;}
+.term-chip:hover{border-color:var(--primary);color:var(--text);}
+.term-chip.selected{border-color:var(--accent);background:rgba(232,98,12,.08);color:var(--accent);font-weight:700;}
+.terms-more-btn{background:none;border:1px dashed var(--border);border-radius:3px;padding:3px 9px;cursor:pointer;font-size:10px;color:var(--text-sec);margin-left:2px;}
+.terms-more-btn:hover{border-color:var(--accent);color:var(--accent);}
+.terms-extra{display:none;margin-top:4px;padding-top:4px;border-top:1px dashed #eee;}.terms-extra.show{display:flex;gap:4px;flex-wrap:wrap;}
+
+/* Multi-select dropdown */
+.ms-wrap{position:relative;}
+.ms-trigger{width:100%;min-height:30px;border:1px solid var(--border);border-radius:var(--radius);padding:2px 26px 2px 7px;font-size:11px;cursor:pointer;background:#fff;display:flex;flex-wrap:wrap;gap:3px;align-items:center;position:relative;transition:border-color .1s;}
+.ms-trigger:hover{border-color:#b0b8c8;}
+.ms-trigger.open{border-color:var(--accent);box-shadow:0 0 0 2px rgba(232,98,12,.08);}
+.ms-trigger::after{content:'▾';position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:9px;color:var(--text-sec);pointer-events:none;}
+.ms-trigger.open::after{content:'▴';}
+.ms-ph{color:var(--text-sec);font-size:12px;line-height:24px;}
+.ms-tag{display:inline-flex;align-items:center;gap:2px;background:#eef1f6;border:1px solid #d0d5e0;border-radius:2px;padding:2px 7px;font-size:11px;color:var(--primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.5;}
+.ms-tag.locked{background:#f0f0f0;color:var(--text-sec);border-color:#e0e0e0;}
+.ms-tag .ms-x{cursor:pointer;color:#aaa;font-size:9px;margin-left:1px;line-height:1;}.ms-tag .ms-x:hover{color:var(--danger);}
+.svc-badge{display:inline-flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;background:var(--border);color:var(--text-sec);padding:0 5px;border-radius:8px;margin-left:4px;min-width:16px;line-height:1.6;}
+.svc-badge.active{background:var(--accent);color:#fff;}
+.ms-panel{position:absolute;top:100%;left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:50;margin-top:2px;display:none;max-height:320px;overflow-y:auto;}
+.ms-panel.open{display:block;}
+.ms-opt{display:flex;align-items:center;gap:6px;padding:7px 10px;cursor:pointer;font-size:12px;color:var(--text);transition:background .06s;}
+.ms-opt:hover:not(.disabled):not(.locked){background:#eef1f6;}
+.ms-opt.checked{background:rgba(232,98,12,.08);}
+.ms-opt.disabled{opacity:.35;cursor:not-allowed;}
+.ms-opt.locked{cursor:default;background:#fafafa;}
+.ms-opt.child{padding-left:24px;}
+.ms-cb{width:13px;height:13px;border:1.5px solid var(--border);border-radius:2px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;color:#fff;transition:all .1s;}
+.ms-opt.checked .ms-cb{background:var(--accent);border-color:var(--accent);}
+.ms-opt.locked .ms-cb{background:var(--text-sec);border-color:var(--text-sec);}
+.ms-opt-n{flex:1;}
+.ms-tag-sm{font-size:9px;padding:0 4px;border-radius:2px;white-space:nowrap;flex-shrink:0;line-height:1.5;}
+.ms-tag-sm.req{background:#fdecea;color:var(--danger);}.ms-tag-sm.auto{background:#e8f5e9;color:var(--success);}
+.svc-chain{margin-top:6px;padding:6px 10px;background:#eef1f6;border:1px solid #d8dce6;border-radius:3px;font-size:11px;color:var(--primary);display:none;line-height:1.8;}
+.svc-chain.show{display:block;}
+.svc-chain b{margin-right:4px;}
+.svc-chain .ch-node{display:inline-block;background:#fff;border:1px solid #d8dce6;padding:1px 6px;border-radius:3px;font-size:10px;white-space:nowrap;margin:1px 0;}
+.svc-chain .ch-arr{color:#bbb;margin:0 2px;font-size:9px;}
+.cond-area{display:none;}.cond-area.show{display:block;}
+
+/* Service options: fixed container below service configuration */
+.service-options-area{margin:8px 16px 0;border-top:1px dashed #e5e8ee;padding-top:8px;}
+.service-options-title{display:flex;align-items:center;gap:6px;margin-bottom:6px;color:var(--primary);font-size:12px;font-weight:600;}
+.service-options-count{display:none;align-items:center;justify-content:center;min-width:16px;padding:0 5px;border-radius:8px;background:var(--accent);color:#fff;font-size:9px;line-height:1.6;}
+.service-options-count.show{display:inline-flex;}
+.service-options-empty{height:32px;display:flex;align-items:center;padding:0 10px;border:1px dashed #dfe3ea;border-radius:var(--radius);background:#fafbfc;color:#a4a9b2;font-size:11px;}
+.service-option-groups{display:flex;flex-direction:column;gap:6px;}
+.service-option-group{display:grid;grid-template-columns:minmax(170px,240px) minmax(0,1fr);align-items:center;gap:10px;padding:7px 10px;border:1px solid #e2e6ed;border-radius:var(--radius);background:#fafbfc;}
+.service-option-group.invalid{border-color:var(--danger);background:#fff6f6;box-shadow:0 0 0 2px rgba(245,108,108,.08);}
+.service-option-label{min-width:0;font-size:11px;color:var(--text);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.service-option-required{margin-left:3px;color:var(--danger);font-size:14px;font-weight:700;line-height:1;}
+.service-option-choices{display:flex;align-items:center;gap:14px;flex-wrap:wrap;min-width:0;}
+.service-option-choice{display:inline-flex;align-items:center;gap:5px;cursor:pointer;color:var(--text);font-size:11px;white-space:nowrap;user-select:none;}
+.service-option-choice input{width:14px;height:14px;margin:0;cursor:pointer;accent-color:var(--ck-color);}
+
+/* Bottom */
+.bbar{position:fixed;bottom:0;left:56px;right:0;background:var(--white);border-top:1px solid var(--border);padding:8px 18px;display:flex;justify-content:center;align-items:center;gap:10px;z-index:80;}
+.btn{height:32px;padding:0 26px;border-radius:var(--radius);font-size:12px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:4px;}
+.btn-primary{background:var(--accent);color:var(--white);}.btn-primary:hover{background:#d5580a;}
+.btn-default{background:var(--white);color:var(--text);border:1px solid var(--border);}.btn-default:hover{background:#f5f7fa;}
+
+/* Match hint */
+.match-hint{display:none;margin:12px 0;padding:10px 14px;background:linear-gradient(135deg,#e8f4fd,#f0f7ff);border:1px solid #a3d4f7;border-left:3px solid #2196f3;border-radius:var(--radius);font-size:12px;color:#1565c0;align-items:center;gap:8px;}
+.match-hint.show{display:flex;}
+.match-hint.pulse{animation:mhPulse 0.6s ease-in-out 0s 3;}
+@keyframes mhPulse{0%,100%{box-shadow:0 0 0 0 rgba(33,150,243,0);}50%{box-shadow:0 0 0 4px rgba(33,150,243,.35);}}
+.match-hint.block-hint{background:linear-gradient(135deg,#fde3e0,#fff1f0);border:1px solid #f1a9a3;border-left:3px solid var(--danger);color:#b71c1c;}
+.match-hint.block-hint .mh-close{color:#e79a95;}.match-hint.block-hint .mh-close:hover{color:#b71c1c;}
+.match-hint.block-hint.pulse{animation:mhPulseR 0.6s ease-in-out 0s 3;}
+@keyframes mhPulseR{0%,100%{box-shadow:0 0 0 0 rgba(211,47,47,0);}50%{box-shadow:0 0 0 4px rgba(211,47,47,.35);}}
+.ds-lock{position:absolute;inset:0;background:rgba(248,249,251,.72);backdrop-filter:blur(1.5px);z-index:20;display:none;}
+.ds-lock.show{display:block;}
+.ds-lock-card{position:sticky;top:20px;max-width:660px;margin:20px auto;padding:0 16px;}
+.ds-lock .match-hint{box-shadow:0 4px 16px rgba(0,0,0,.1);}
+.sc-bar{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:5px 9px;margin-bottom:8px;background:#f7f8fa;border:1px solid var(--border);border-radius:var(--radius);font-size:11px;}
+.sc-title{color:var(--text-sec);font-weight:600;white-space:nowrap;display:inline-flex;align-items:center;gap:4px;}
+.sc-help{position:relative;width:14px;height:14px;border:1px solid #aeb6c3;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#7d8796;background:#fff;font-size:10px;font-weight:700;line-height:1;cursor:help;outline:none;}
+.sc-help:hover,.sc-help:focus{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 2px rgba(30,45,79,.08);}
+.sc-help-tip{display:none;position:absolute;bottom:calc(100% + 7px);left:-18px;width:max-content;max-width:calc(100vw - 80px);padding:8px 10px;border-radius:4px;background:#303846;color:#fff;font-size:11px;font-weight:400;line-height:1.55;white-space:normal;text-align:left;z-index:120;box-shadow:0 5px 16px rgba(0,0,0,.2);}
+.sc-help-tip::before{content:'';position:absolute;left:20px;bottom:-5px;width:10px;height:10px;background:#303846;transform:rotate(45deg);}
+.sc-help:hover .sc-help-tip,.sc-help:focus .sc-help-tip{display:block;}
+.sc-help-tip span{display:block;white-space:nowrap;}
+.sc-chips{display:flex;gap:6px;flex-wrap:wrap;flex:1;min-width:120px;}
+.sc-empty{color:#aaa;}
+.sc-chip{position:relative;display:inline-flex;align-items:center;gap:2px;max-width:160px;padding:2px 4px 2px 8px;background:#fff;border:1px solid #d5e3f0;border-radius:12px;color:#1565c0;cursor:grab;white-space:nowrap;}
+.sc-chip:hover::after{content:attr(data-tip);position:absolute;left:0;bottom:calc(100% + 5px);background:#333;color:#fff;font-size:11px;font-weight:400;padding:4px 8px;border-radius:4px;white-space:nowrap;z-index:60;pointer-events:none;box-shadow:0 2px 8px rgba(0,0,0,.25);}
+.sc-chip:active{cursor:grabbing;}
+.sc-chip .sc-name{overflow:hidden;text-overflow:ellipsis;max-width:118px;}
+.sc-chip.cust{border-color:#d8ccec;color:#6a3fb5;}
+.sc-chip:hover{background:#f0f7ff;}
+.sc-chip .sc-x{color:#c4c4c4;font-weight:700;padding:0 3px;border-radius:8px;line-height:1;}
+.sc-chip .sc-x:hover{color:var(--danger);background:#fde3e0;}
+.sc-add{font-size:11px;padding:3px 8px;border:1px dashed #9db8d6;background:#fff;border-radius:12px;color:#4472C4;cursor:pointer;white-space:nowrap;}
+.sc-add:disabled{opacity:.5;cursor:not-allowed;}
+.sc-count{color:#999;white-space:nowrap;}
+.modal-mask{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;z-index:1000;}
+.modal-mask.show{display:flex;}
+.modal-box{width:340px;max-width:92vw;background:#fff;border-radius:8px;box-shadow:0 12px 40px rgba(0,0,0,.2);overflow:hidden;font-size:12px;animation:mbIn .12s ease-out;}
+@keyframes mbIn{from{transform:translateY(8px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal-hd{padding:14px 18px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border);}
+.modal-bd{padding:16px 18px;}
+.modal-lb{color:var(--text-sec);margin-bottom:6px;}
+.modal-inp{width:100%;box-sizing:border-box;padding:7px 9px;border:1px solid var(--border);border-radius:5px;font-size:12px;outline:none;}
+.modal-inp:focus{border-color:var(--accent);}
+.modal-ft{padding:12px 18px;display:flex;justify-content:flex-end;gap:8px;background:#fafbfc;border-top:1px solid var(--border);}
+.modal-btn{padding:5px 15px;border-radius:5px;font-size:12px;cursor:pointer;border:1px solid var(--border);}
+.modal-btn.ghost{background:#fff;color:var(--text-sec);}
+.modal-btn.ghost:hover{background:#f0f1f3;}
+.modal-btn.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+.modal-btn.primary:hover{filter:brightness(1.05);}
+
+
+.match-hint .mh-icon{font-size:16px;flex-shrink:0;}
+.match-hint .mh-text{flex:1;}
+.match-hint .mh-type{font-weight:600;color:var(--primary);}
+.match-hint .mh-btn{padding:3px 10px;background:#2196f3;color:#fff;border:none;border-radius:3px;cursor:pointer;font-size:11px;white-space:nowrap;}
+.match-hint .mh-btn:hover{background:#1976d2;}
+.match-hint .mh-close{cursor:pointer;color:#90caf9;font-size:14px;margin-left:4px;}.match-hint .mh-close:hover{color:#1565c0;}
+/* 楼层内附件字段 */
+.kv-file-zone{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
+.kv-file-btn{padding:3px 10px;border:1px dashed var(--border);border-radius:3px;background:#fafbfc;cursor:pointer;font-size:11px;color:var(--text-sec);transition:all .1s;}
+.kv-file-btn:hover{border-color:var(--accent);color:var(--accent);}
+.kv-file-item{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;background:#eef1f6;border:1px solid #d0d5e0;border-radius:3px;font-size:11px;}
+.kv-file-item .kfx{cursor:pointer;color:#aaa;font-size:12px;}.kv-file-item .kfx:hover{color:var(--danger);}
+
+/* Fullscreen mode */
+.fs-btn{width:30px;height:30px;border-radius:4px;border:none;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:auto;flex-shrink:0;transition:all .15s;}
+.fs-btn:hover{background:rgba(255,255,255,.22);color:#fff;}
+.fs-btn svg{width:16px;height:16px;}
+body.fullscreen .topbar,body.fullscreen .sidebar,body.fullscreen .tab-bar{display:none!important;}
+body.fullscreen .layout{padding-top:0;}
+body.fullscreen .main-wrap{margin-left:0;}
+body.fullscreen .step-nav{flex-shrink:0;}
+body.fullscreen .content{padding-bottom:12px;}
+body.fullscreen .bbar{left:0;}
+
+.toast{position:fixed;top:54px;right:18px;padding:8px 15px;border-radius:4px;font-size:12px;display:none;z-index:999;box-shadow:0 3px 12px rgba(0,0,0,.15);color:var(--white);}
+.toast.show{display:flex;align-items:center;gap:6px;animation:si .25s;}
+.toast.ok{background:var(--success);}.toast.warn{background:var(--warning);}
+@keyframes si{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ====== Reference Panel (v5) ====== */
+.rp-toggle-btn{width:30px;height:30px;border-radius:4px;border:none;background:rgba(255,255,255,.12);color:rgba(255,255,255,.7);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;margin-left:6px;}
+.rp-toggle-btn:hover{background:rgba(255,255,255,.22);color:#fff;}
+.rp-toggle-btn.active{background:var(--accent);color:#fff;}
+.rp-toggle-btn svg{width:16px;height:16px;}
+
+.split-handle{width:4px;background:#e0e0e0;cursor:col-resize;flex-shrink:0;transition:background .15s;display:none;position:relative;z-index:2;}
+.split-handle:hover,.split-handle.dragging{background:#bbb;}
+.split-handle.visible{display:block;}
+
+.ref-panel{width:420px;min-width:300px;max-width:60vw;border-left:1px solid var(--border);background:var(--white);flex-shrink:0;display:none;flex-direction:column;overflow:hidden;}
+.ref-panel.open{display:flex;}
+
+.rp-header{display:flex;align-items:center;padding:4px 10px;border-bottom:1px solid var(--border);background:#fafbfc;flex-shrink:0;gap:6px;height:34px;}
+.rp-header .rp-title{font-size:12px;font-weight:600;color:var(--primary);white-space:nowrap;flex-shrink:0;}
+.rp-header .rp-file-tabs-inline{display:flex;gap:3px;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;align-items:center;}
+.rp-header .rp-file-tabs-inline::-webkit-scrollbar{display:none;}
+.rp-header .rp-close{width:22px;height:22px;border:none;background:none;cursor:pointer;font-size:16px;color:var(--text-sec);display:flex;align-items:center;justify-content:center;border-radius:3px;transition:all .1s;flex-shrink:0;}
+.rp-header .rp-close:hover{background:#eee;color:var(--danger);}
+
+.rp-tabs-inline{display:flex;gap:1px;background:#eef1f6;border-radius:3px;padding:1px;flex-shrink:0;}
+.rp-tab-i{padding:2px 8px;border-radius:2px;font-size:11px;color:var(--text-sec);cursor:pointer;white-space:nowrap;transition:all .12s;user-select:none;}
+.rp-tab-i:hover{color:var(--text);}
+.rp-tab-i.active{background:var(--white);color:var(--accent);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08);}
+
+.rp-body{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;}
+
+/* File tabs (inline in header) */
+.rp-file-tab{position:relative;display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:3px;border:1px solid var(--border);background:#fff;font-size:10px;color:var(--text);cursor:pointer;max-width:120px;white-space:nowrap;transition:all .1s;flex-shrink:0;height:22px;overflow:hidden;}
+.rp-file-tab .rft-name{overflow:hidden;text-overflow:ellipsis;}
+.rp-file-tab .rft-x{display:none;}
+.rp-file-tab:hover .rft-x{position:absolute;right:0;top:0;bottom:0;width:18px;display:flex;align-items:center;justify-content:center;background:inherit;font-size:12px;color:#999;cursor:pointer;border-radius:0 3px 3px 0;}
+.rp-file-tab:hover .rft-x:hover{color:var(--danger);background:#fee;}
+.rp-file-tab:hover{border-color:var(--primary);}
+.rp-file-tab.active{border-color:var(--accent);background:rgba(232,98,12,.08);color:var(--accent);font-weight:500;}
+.rp-file-tab .rft-icon{flex-shrink:0;}
+/* 文件标签右键菜单 */
+.rft-ctx{position:fixed;background:#fff;border:1px solid var(--border);border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:9999;padding:4px 0;min-width:100px;}
+.rft-ctx-item{padding:6px 16px;font-size:12px;color:var(--text);cursor:pointer;white-space:nowrap;}
+.rft-ctx-item:hover{background:#f5f5f5;color:var(--danger);}
+
+/* Dropzone */
+.rp-dropzone{margin:10px;padding:28px 16px;border:2px dashed var(--border);border-radius:6px;text-align:center;cursor:pointer;transition:all .15s;color:var(--text-sec);user-select:none;}
+.rp-dropzone:hover{border-color:var(--accent);color:var(--accent);background:rgba(232,98,12,.03);}
+.rp-dropzone.dragover{border-color:var(--accent);background:rgba(232,98,12,.06);color:var(--accent);}
+.rp-dropzone .dz-icon{font-size:28px;margin-bottom:6px;}
+.rp-dropzone .dz-text{font-size:12px;line-height:1.6;}
+.rp-dropzone .dz-hint{font-size:10px;color:#bbb;margin-top:4px;}
+
+/* File viewer area */
+.rp-file-viewer{flex:1;overflow-y:auto;padding:8px;min-height:0;overscroll-behavior:contain;}
+.rp-file-viewer img{max-width:100%;height:auto;cursor:zoom-in;border-radius:3px;display:block;margin:0 auto;}
+.rp-file-viewer img.zoomed{max-width:none;cursor:zoom-out;}
+.rp-file-viewer iframe,.rp-file-viewer embed,.rp-file-viewer object{width:100%;height:100%;min-height:400px;border:none;border-radius:3px;}
+
+/* Excel table in ref panel */
+.ref-table{width:100%;border-collapse:collapse;font-size:11px;}
+.ref-table th{background:#f5f6f8;border:1px solid #e0e0e0;padding:4px 6px;font-weight:600;text-align:center;color:var(--text-sec);position:sticky;top:0;z-index:1;}
+.ref-table td{border:1px solid #e0e0e0;padding:3px 6px;text-align:left;white-space:nowrap;max-width:200px;overflow:hidden;text-overflow:ellipsis;}
+.ref-table tr:hover td{background:#f5f7fa;}
+
+/* Sheet tabs for Excel */
+.rp-sheet-tabs{display:flex;gap:2px;padding:6px 8px;background:#f5f6f8;border-top:1px solid #eee;flex-shrink:0;flex-wrap:wrap;}
+.rp-sheet-tab{padding:3px 10px;border-radius:3px;font-size:11px;cursor:pointer;color:var(--text-sec);background:#fff;border:1px solid var(--border);transition:all .1s;}
+.rp-sheet-tab:hover{border-color:var(--primary);color:var(--text);}
+.rp-sheet-tab.active{border-color:var(--accent);color:var(--accent);font-weight:600;background:rgba(232,98,12,.06);}
+
+/* Text tab */
+.rp-text-area{flex:1;display:none;padding:0;}
+.rp-text-area.active{display:flex;flex-direction:column;}
+.rp-text-area textarea{flex:1;border:none;outline:none;padding:12px;font-family:'SF Mono','Menlo','Consolas',monospace;font-size:12px;color:var(--text);line-height:1.6;resize:none;background:var(--white);overscroll-behavior:contain;}
+.rp-text-area textarea::placeholder{color:#ccc;}
+
+/* Files tab content */
+.rp-files-area{flex:1;display:flex;flex-direction:column;min-height:0;overflow:hidden;}
+.rp-files-area.active{/* default visible */}
+
+/* Panel in fullscreen */
+body.fullscreen .ref-panel{/* works fine, just ensure bbar adjusts */}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo-area">
+    <div class="logo-brand"><span class="brand-icon">⛵</span><div><span class="brand-name">国际物流</span><span class="brand-sub">ON TIME, EVERY TIME</span></div></div>
+    <div class="logo-sep"></div><span class="logo-fms">FMS</span>
+  </div>
+  <div class="top-right">
+    <select><option>国际物流（深圳）</option><option>国际物流（宁波）</option><option>国际物流（上海）</option></select>
+    <div class="top-icon">📅</div><div class="top-icon">💬</div><div class="top-icon">📋</div><div class="top-icon">🔔</div>
+    <div class="avatar">龙久</div>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <a class="nav-item"><span class="ni">🔍</span></a>
+    <a class="nav-item"><span class="ni">📋</span><span>事务</span></a>
+    <a class="nav-item"><span class="ni">🚢</span><span>海进</span></a>
+    <a class="nav-item active"><span class="ni">🚛</span><span>运输</span></a>
+    <a class="nav-item"><span class="ni">🏭</span><span>仓储</span></a>
+    <a class="nav-item"><span class="ni">💲</span><span>结算</span></a>
+    <a class="nav-item"><span class="ni">📊</span><span>报表</span></a>
+    <a class="nav-item"><span class="ni">📈</span><span>数据</span></a>
+    <a class="nav-item"><span class="ni">⚙️</span><span>管理</span></a>
+    <a class="nav-item"><span class="ni">🔧</span><span>系统</span></a>
+  </div>
+
+  <div class="main-wrap">
+    <div class="tab-bar">
+      <div class="tab-it">首页</div>
+      <div class="tab-it">订单列表 <span class="x">×</span></div>
+      <div class="tab-it active">订单创建 <span class="x">×</span></div>
+    </div>
+
+    <!-- 楼层导航 -->
+    <div class="step-nav">
+      <div class="sn-title">📦 新增订单</div>
+      <div class="doc-switcher">
+        <span class="ds-btn active" data-doc="biz" onclick="switchDocType('biz')">业务单据</span>
+        <span class="ds-btn" data-doc="settle" onclick="switchDocType('settle')">结算单</span>
+      </div>
+      <div style="width:1px;height:20px;background:rgba(255,255,255,.2);margin:0 8px;flex-shrink:0;"></div>
+      <div id="navSteps">
+        <div class="step-item active" data-target="sec1" onclick="scrollToSec('sec1')"><span class="step-num">1</span> 服务信息</div>
+        <div class="step-connector std-nav"></div>
+        <div class="step-item std-nav" data-target="sec2" onclick="scrollToSec('sec2')"><span class="step-num">2</span> 客户信息</div>
+        <div class="step-connector std-nav"></div>
+        <div class="step-item std-nav" data-target="sec3" onclick="scrollToSec('sec3')"><span class="step-num">3</span> 航线与船期</div>
+        <div class="step-connector std-nav"></div>
+        <div class="step-item std-nav" data-target="sec4" onclick="scrollToSec('sec4')"><span class="step-num">4</span> 货物与箱量</div>
+        <div class="step-connector std-nav"></div>
+        <div class="step-item std-nav" data-target="sec5" onclick="scrollToSec('sec5')"><span class="step-num">5</span> 单证与舱位</div>
+        <div class="step-connector std-nav"></div>
+        <div class="step-item std-nav" data-target="sec6" onclick="scrollToSec('sec6')"><span class="step-num">6</span> 责任人与备注</div>
+        <!-- 自选模式导航（动态生成） -->
+        <span id="custNavArea"></span>
+      </div>
+      <button class="rp-toggle-btn" id="rpToggleBtn" onclick="toggleRefPanel()" title="参考资料面板">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="1" width="14" height="14" rx="1.5"/>
+          <line x1="10" y1="1" x2="10" y2="15"/>
+          <line x1="12" y1="5" x2="14" y2="5"/>
+          <line x1="12" y1="8" x2="14" y2="8"/>
+          <line x1="12" y1="11" x2="14" y2="11"/>
+        </svg>
+      </button>
+      <button class="fs-btn" id="fsBtn" onclick="toggleFullscreen()" title="全屏模式">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1,5 1,1 5,1"/><polyline points="11,1 15,1 15,5"/><polyline points="15,11 15,15 11,15"/><polyline points="5,15 1,15 1,11"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="split-container">
+    <div class="content">
+
+      <!-- ================================================================ -->
+      <!-- 第1层：服务信息 (from booking, adapted to v3 style)              -->
+      <!-- ================================================================ -->
+      <div class="section" id="sec1">
+        <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>服务信息 (Service Information)</h3><span class="tgl">▾</span></div>
+        <div class="sec-bd">
+          <!-- 我的快捷 -->
+          <div class="sc-bar" id="scBar">
+            <span class="sc-title">⚡ 我的快捷
+              <span class="sc-help" tabindex="0" role="note" aria-label="快捷方式存储说明">?
+                <span class="sc-help-tip" role="tooltip">
+                  <span>快捷方式仅保存在当前浏览器。</span>
+                  <span>不支持跨浏览器或设备同步；</span>
+                  <span>清理网站数据后将被清空。</span>
+                </span>
+              </span>
+            </span>
+            <div class="sc-chips" id="scChips"></div>
+            <button class="sc-add" id="scAdd" onclick="saveShortcut()">＋ 保存当前</button>
+            <span class="sc-count" id="scCount">0/5</span>
+          </div>
+          <div class="fg">
+            <!-- 类型+方式一行 -->
+            <div class="fi s2">
+              <div class="fl"><span class="rq">*</span> 物流类型 (Logistics Type)</div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div class="type-chips" id="typeArea">
+                  <div class="type-chip" data-v="ocean" onclick="selType(this)"><span class="tc-icon">🚢</span> 海运</div>
+                  <div class="type-chip" data-v="land" onclick="selType(this)"><span class="tc-icon">🚛</span> 陆运</div>
+                  <div class="type-chip" data-v="air" onclick="selType(this)"><span class="tc-icon">✈️</span> 空运</div>
+                  <div class="type-tail">
+                    <div class="type-chip" data-v="express" onclick="selType(this)"><span class="tc-icon">📦</span> 国际快递</div>
+                    <label class="ck"><input type="checkbox" id="typeCustom" onchange="onTypeCustom()"> 自选</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="fi s2 cond-area" id="modeWrap">
+              <div class="fl"><span class="rq">*</span> 运输方式 (Transport Mode)</div>
+              <div class="mode-chips" id="modeChips"></div>
+            </div>
+          </div>
+
+          <!-- 运输条款 -->
+          <div class="cond-area" id="termsArea">
+            <div class="fg" style="margin-top:6px;">
+              <div class="fi s4">
+                <div class="fl"><span class="rq">*</span> 运输条款 (Shipping Terms) <span style="color:var(--text-sec);font-weight:400;margin-left:6px;">起运地 → 目的地</span><span id="termDesc" style="color:var(--accent);font-weight:500;margin-left:8px;"></span></div>
+                <div><div style="display:flex;align-items:center;gap:4px;flex-wrap:wrap;"><div class="term-chips" id="termsCommon"></div><button class="terms-more-btn" id="termsMoreBtn" onclick="toggleTermsMore()">更多 ▾</button></div><div class="terms-extra" id="termsExtra"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 服务配置 -->
+          <div class="cond-area" id="svcArea">
+            <div class="fg" style="margin-top:6px;">
+              <div class="fi">
+                <div class="fl">起运地服务 (Origin) <span class="svc-badge" id="badge-origin">0</span></div>
+                <div class="ms-wrap"><div class="ms-trigger" id="trig-origin" onclick="toggleMS('origin',event)"><span class="ms-ph">选择服务...</span></div><div class="ms-panel" id="panel-origin" onclick="event.stopPropagation()"></div></div>
+              </div>
+              <div class="fi">
+                <div class="fl">国际运输 (International) <span class="svc-badge" id="badge-intl">0</span></div>
+                <div class="ms-wrap"><div class="ms-trigger" id="trig-intl" onclick="toggleMS('intl',event)"><span class="ms-ph">选择服务...</span></div><div class="ms-panel" id="panel-intl" onclick="event.stopPropagation()"></div></div>
+              </div>
+              <div class="fi">
+                <div class="fl">目的地服务 (Destination) <span class="svc-badge" id="badge-dest">0</span></div>
+                <div class="ms-wrap"><div class="ms-trigger" id="trig-dest" onclick="toggleMS('dest',event)"><span class="ms-ph">选择服务...</span></div><div class="ms-panel" id="panel-dest" onclick="event.stopPropagation()"></div></div>
+              </div>
+              <div class="fi">
+                <div class="fl">增值服务 (VAS) <span class="svc-badge" id="badge-vas">0</span></div>
+                <div class="ms-wrap"><div class="ms-trigger" id="trig-vas" onclick="toggleMS('vas',event)"><span class="ms-ph">选择服务...</span></div><div class="ms-panel" id="panel-vas" onclick="event.stopPropagation()"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 服务选项：固定位置，内容随所选服务动态变化 -->
+          <div class="service-options-area" id="serviceOptionsArea" aria-live="polite">
+            <div class="service-options-title">服务选项 (Service Options)<span class="service-options-count" id="serviceOptionsCount">0</span></div>
+            <div id="serviceOptionsContent"><div class="service-options-empty">所选服务无需额外选项</div></div>
+            <div class="svc-chain" id="chainBar"><b>服务链路：</b><span id="chainTx"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================================================================ -->
+      <!-- 第2层：客户信息                                                   -->
+      <!-- ================================================================ -->
+
+        <div class="section" id="sec2">
+          <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>客户信息 (Customer Information)</h3><span class="tgl">▾</span></div>
+          <div class="sec-bd">
+            <div class="fg" style="grid-template-columns:repeat(3,1fr);">
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 委托单位 (Booking Party)</div>
+                <select class="fc" id="bookingParty"><option value="">请选择委托单位</option><option>宁波三和纺织进出口有限公司</option><option>上海华谷电子科技有限公司</option><option>深圳市大疆创新科技</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 结算单位 (Billing Entity)</div>
+                <select class="fc" id="billingEntity"><option value="">请选择结算单位</option><option>国际物流（深圳）物流有限公司</option><option>国际物流（宁波）物流有限公司</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl">进口商 (Importer)</div>
+                <select class="fc" id="selImporter"><option value="">请选择进口商</option><option>TechWorld Import Inc.</option><option>Pacific Trade LLC</option><option>Best Buy Distribution Center</option></select>
+              </div>
+
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 客户 (Customer)</div>
+                <div class="ig">
+                  <select class="fc" id="customer" onchange="fillCustomer(this.value)">
+                    <option value="">请选择客户</option>
+                    <option value="k1">宁波三和纺织进出口有限公司</option>
+                    <option value="k2">上海华谊电子科技有限公司</option>
+                    <option value="k3">深圳市大疆创新科技</option>
+                    <option value="k4">义乌市锐达贸易有限公司</option>
+                  </select>
+                  <button class="ba">选择</button>
+                </div>
+              </div>
+              <div class="fi">
+                <div class="fl">客户编号 (Customer No.)</div>
+                <div class="fc-cnt"><input type="text" class="fc" placeholder="请填写"><span class="cnt">0/300</span></div>
+              </div>
+              <div class="fi">
+                <div class="fl">原始客户编号 (Original Cust. No.)</div>
+                <div class="fc-cnt"><input type="text" class="fc" placeholder="请填写"><span class="cnt">0/50</span></div>
+              </div>
+
+              <div class="dv"></div>
+
+              <div class="fi s2">
+                <div class="fl">合约号 (Contract No.) <span style="color:var(--text-sec);font-weight:400;margin-left:4px;">（选择后自动带入客户）</span></div>
+                <div class="ig">
+                  <select class="fc" id="contractNo" onchange="fillContract(this.value)">
+                    <option value="">无合约 / 选择合约</option>
+                    <option value="c1">SC-MAEU-2026-NBO-001</option>
+                    <option value="c2">SC-COSU-2026-SHA-015</option>
+                    <option value="c3">SC-ONEY-2026-SZX-008</option>
+                    <option value="c4">SC-HLCU-2026-NBO-003</option>
+                  </select>
+                  <button class="ba">选择</button>
+                </div>
+              </div>
+              <div class="fi">
+                <div class="fl">合约类型 (Contract Type)</div>
+                <select class="fc" id="ctype"><option value="">请选择</option><option>FAK</option><option>NAC</option><option>SC (Service Contract)</option><option selected>SPOT</option></select>
+              </div>
+
+              <div class="fi">
+                <div class="fl">GROUP / BULLET</div>
+                <input type="text" class="fc" id="grp" placeholder="选择合约后带出" disabled>
+              </div>
+              <div class="fi">
+                <div class="fl">Name Account</div>
+                <input type="text" class="fc" id="nacc" placeholder="自动带出" disabled>
+              </div>
+              <div class="fi">
+                <div class="fl">Commodity</div>
+                <input type="text" class="fc" id="cmdt" placeholder="自动带出" disabled>
+              </div>
+
+              <div class="dv"></div>
+
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 运费条款 (Freight Terms)</div>
+                <select class="fc" id="freightTerm"><option value="">请选择</option><option selected>PREPAID (预付)</option><option>COLLECT (到付)</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl">贸易术语 (Incoterms)</div>
+                <select class="fc"><option value="">请选择</option><option>FOB</option><option>CIF</option><option>CFR</option><option>EXW</option><option>DDP</option><option>DAP</option><option>FCA</option><option>CPT</option><option>CIP</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl">订舱代理 (Booking Agent)</div>
+                <select class="fc"><option value="">请选择</option><option>宁波华贸国际货运</option><option>上海泛亚航运代理</option><option>深圳捷丰物流</option></select>
+              </div>
+            </div>
+
+            <!-- 当事方 -->
+            <div style="margin-top:12px;">
+              <div class="sub-label">当事方信息 (Parties)</div>
+              <div class="pcards">
+                <div class="pcard">
+                  <div class="ptitle"><span class="rq">*</span> 发货人 (Shipper)</div>
+                  <select class="fc" id="shipper"><option value="">请选择</option><option value="s1">宁波三和纺织进出口有限公司</option><option value="s2">上海华谊电子科技有限公司</option><option value="s3">深圳市大疆创新科技</option></select>
+                  <textarea class="fc" rows="2" id="shipperAddr" placeholder="发货人名称、地址..."></textarea>
+                </div>
+                <div class="pcard">
+                  <div class="ptitle"><span class="rq">*</span> 收货人 (Consignee)</div>
+                  <select class="fc" id="consignee" onchange="fillConsignee(this.value)"><option value="">请选择</option><option value="c1">TO ORDER / TO ORDER OF SHIPPER</option><option value="c2">Best Buy Distribution Center</option><option value="c3">Amazon FBA - ONT8</option><option value="c4">Walmart DC #6057</option></select>
+                  <textarea class="fc" rows="2" id="consigneeAddr" placeholder="收货人名称、地址..."></textarea>
+                </div>
+                <div class="pcard">
+                  <div class="ptitle"><span class="rq">*</span> 通知人 (Notify Party)</div>
+                  <select class="fc" id="notify"><option value="">请选择</option><option value="same">SAME AS CONSIGNEE</option><option>TechWorld Import Inc.</option><option>Pacific Trade LLC</option></select>
+                  <textarea class="fc" rows="2" placeholder="通知人名称、地址..."></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- ================================================================ -->
+      <!-- 第3层：航线与船期                                                 -->
+      <!-- ================================================================ -->
+        <div class="section" id="sec3">
+          <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>航线与船期 (Route &amp; Schedule)</h3><span class="tgl">▾</span></div>
+          <div class="sec-bd">
+            <div class="fg">
+              <div class="fi">
+                <div class="fl">接货地 (Receipt)</div>
+                <select class="fc" id="receipt" onchange="onReceipt()"><option value="">请选择</option><option value="NINGBO">NINGBO, CN</option><option value="SHANGHAI">SHANGHAI, CN</option><option value="SHENZHEN">SHENZHEN, CN</option><option value="YIWU">YIWU, CN</option><option value="QINGDAO">QINGDAO, CN</option><option value="XIAMEN">XIAMEN, CN</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 起运港 (POL)</div>
+                <select class="fc" id="pol"><option value="">请选择</option><option value="CNNGB">CNNGB - 宁波/舟山</option><option value="CNSHA">CNSHA - 上海</option><option value="CNYTN">CNYTN - 盐田/深圳</option><option value="CNQIN">CNQIN - 青岛</option><option value="CNXMN">CNXMN - 厦门</option><option value="CNTAO">CNTAO - 天津</option><option value="CNSNK">CNSNK - 蛇口/深圳</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 卸货港 (POD)</div>
+                <select class="fc" id="pod"><option value="">请选择</option><option value="USLAX">USLAX - 洛杉矶</option><option value="USLGB">USLGB - 长滩</option><option value="USNYC">USNYC - 纽约/新泽西</option><option value="USSAV">USSAV - 萨凡纳</option><option value="GBFXT">GBFXT - 费利克斯托</option><option value="NLRTM">NLRTM - 鹿特丹</option><option value="DEHAM">DEHAM - 汉堡</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 交货地 (Delivery)</div>
+                <select class="fc" id="del"><option value="">请选择</option><option>LOS ANGELES, CA, US</option><option>LONG BEACH, CA, US</option><option>NEW YORK, NY, US</option><option>CHICAGO, IL, US</option><option>FELIXSTOWE, GB</option><option>ROTTERDAM, NL</option><option>HAMBURG, DE</option></select>
+              </div>
+
+              <div class="dv"></div>
+
+              <div class="fi">
+                <div class="fl">船公司 (Carrier)</div>
+                <select class="fc" id="carrier"><option value="">请选择</option><option>MAEU - Maersk</option><option>MSCU - MSC</option><option>COSU - COSCO</option><option>CMDU - CMA CGM</option><option>HLCU - Hapag-Lloyd</option><option>ONEY - ONE</option><option>EGLV - Evergreen</option><option>YMLU - Yang Ming</option><option>ZIMU - ZIM</option></select>
+              </div>
+              <div class="fi">
+                <div class="fl">船名/航次 (Vessel / Voyage)</div>
+                <div class="ip"><select class="fc" id="vessel"><option value="">请选择船名...</option><option>COSCO SHIPPING ALPS</option><option>MAERSK SELETAR</option><option>MSC GÜLSÜN</option><option>CMA CGM JACQUES SAADE</option></select><input type="text" class="fc" id="voyage" placeholder="航次" style="max-width:70px;"></div>
+              </div>
+              <div class="fi">
+                <div class="fl">航线代码 (Route Code)</div>
+                <input type="text" class="fc" placeholder="选择船期后带入" disabled>
+              </div>
+              <div class="fi">
+                <div class="fl">订舱方式 (Booking Method)</div>
+                <select class="fc"><option value="">请选择</option><option>线上订舱</option><option>邮件订舱</option><option>EDI订舱</option><option>电话订舱</option></select>
+              </div>
+
+              <div class="dv"></div>
+
+              <div class="fi"><div class="fl">ETD</div><input type="date" class="fc" id="etd"></div>
+              <div class="fi"><div class="fl">ETA</div><input type="date" class="fc" id="eta"></div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> 船期编号 (Schedule No.)</div><input type="text" class="fc" placeholder="船期编号" id="schNo"></div>
+              <div class="fi"><div class="fl">Pre-carriage by</div><input type="text" class="fc" placeholder="请输入" maxlength="40"></div>
+
+              <div class="dv"></div>
+
+              <div class="fi">
+                <label class="cb"><input type="checkbox" id="demDetMix"> Dem. Det 混用 (Combined)</label>
+              </div>
+              <div class="fi">
+                <div class="fl">Dem. Free Time <span class="tip"><span class="ti">?</span><span class="tt">滞港免费天数</span></span></div>
+                <div class="ip"><input type="number" class="fc" value="7" style="width:55px;"><select class="fc" style="width:80px;"><option>CALENDAR</option><option>WORKING</option></select></div>
+              </div>
+              <div class="fi">
+                <div class="fl">Det. Free Time <span class="tip"><span class="ti">?</span><span class="tt">滞箱免费天数</span></span></div>
+                <div class="ip"><input type="number" class="fc" value="4" style="width:55px;"><select class="fc" style="width:80px;"><option>CALENDAR</option><option>WORKING</option></select></div>
+              </div>
+
+              <div class="dv"></div>
+
+              <div class="fi s4">
+                <div class="fl" style="font-weight:600;color:var(--primary);">中转/二程船 (Transshipment) <button class="abtn" style="margin:0 0 0 8px;padding:2px 8px;" onclick="addTransit()">＋ 添加</button></div>
+                <div id="transitList"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- ================================================================ -->
+      <!-- 第4层：货物与箱量                                                 -->
+      <!-- ================================================================ -->
+        <div class="section" id="sec4">
+          <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>货物与集装箱 (Cargo &amp; Container)</h3><span class="tgl">▾</span></div>
+          <div class="sec-bd">
+            <div class="sub-label">集装箱信息 (Container)</div>
+            <div style="padding:0 20px;">
+              <table class="ct" id="ctnTbl">
+                <thead><tr><th style="width:28px;">#</th><th style="width:90px;"><span style="color:var(--danger)">*</span> 箱型 (Type)</th><th style="width:55px;"><span style="color:var(--danger)">*</span> 箱量 (Qty)</th><th style="width:110px;">属性 (Ownership)</th><th style="width:120px;">箱号 (Ctn No.)</th><th style="width:90px;">铅封号 (Seal No.)</th><th style="width:70px;">皮重 (Tare Wt.)</th><th style="width:28px;"></th></tr></thead>
+                <tbody><tr><td>1</td><td><select><option>20GP</option><option selected>40GP</option><option>40HQ</option><option>45HQ</option><option>20RF</option><option>40RF</option><option>20OT</option><option>40OT</option></select></td><td><input type="number" value="2" oninput="updCtn()"></td><td><select><option selected>COC (船东箱)</option><option>SOC (自有箱)</option></select></td><td><input type="text" placeholder="待分配"></td><td><input type="text" placeholder="待封箱"></td><td><input type="number" value="3800"></td><td><button class="db" onclick="delCtn(this)">✕</button></td></tr></tbody>
+                <tfoot><tr><td></td><td style="text-align:right;">合计</td><td id="ctnTot">2</td><td colspan="5"></td></tr></tfoot>
+              </table>
+              <button class="abtn" onclick="addCtn()">＋ 添加箱型</button>
+            </div>
+
+            <div style="border-top:1px solid #eee;margin:12px 20px 8px;"></div>
+
+            <div class="sub-label">货物明细 (Cargo Detail)</div>
+            <div class="fg">
+              <div class="fi"><div class="fl"><span class="rq">*</span> 件数 (Packages)</div><input type="number" class="fc" id="pkgs" oninput="calc()"></div>
+              <div class="fi"><div class="fl">包装类型 (Packing)</div><select class="fc" id="packingType"><option selected>CARTONS (纸箱)</option><option>PALLETS (托盘)</option><option>PACKAGES (件)</option><option>BAGS (袋)</option><option>ROLLS (卷)</option><option>DRUMS (桶)</option></select></div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> 毛重 (KG)</div><input type="number" class="fc" id="gw" oninput="calc()"></div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> 体积 (CBM)</div><input type="number" class="fc" id="cbm" oninput="calc()"></div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> 唛头 (Marks)</div><input type="text" class="fc" placeholder="请输入" id="marks"></div>
+              <div class="fi"><div class="fl">中文品名 (CN Desc.)</div><input type="text" class="fc" placeholder="请输入"></div>
+              <div class="fi s2">
+                <div class="fl"><span class="rq">*</span> 英文品名 / HS CODE</div>
+                <div id="hsRows"><div class="hr"><input type="text" class="fc" placeholder="英文品名" style="flex:2;" id="enName"><input type="text" class="fc" placeholder="HS CODE" style="flex:1;"><button class="db" onclick="this.parentElement.remove()" style="font-size:12px;">✕</button></div></div>
+                <button class="abtn" onclick="addHs()">＋ 添加品名</button>
+              </div>
+            </div>
+            <div class="sum"><span>汇总：</span><span>件数 <strong id="sp">0</strong></span><span>毛重 <strong id="sg">0</strong> KG</span><span>体积 <strong id="sc">0</strong> CBM</span><span>件均重 <strong id="sa">-</strong> KG</span></div>
+          </div>
+        </div>
+
+      <!-- ================================================================ -->
+      <!-- 第5层：单证与舱位                                                 -->
+      <!-- ================================================================ -->
+        <div class="section" id="sec5">
+          <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>单证与舱位 (Documentation &amp; Booking)</h3><span class="tgl">▾</span></div>
+          <div class="sec-bd">
+            <div class="fg">
+              <div class="fi">
+                <div class="fl"><span class="rq">*</span> 提单类型 (B/L Type)</div>
+                <select class="fc" id="blType"><option value="">请选择</option><option>MBL (船东提单)</option><option selected>HBL (货代提单)</option><option>SWB (海运单)</option><option>Telex Release (电放)</option></select>
+              </div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> S/O 关单号</div><input type="text" class="fc" placeholder="请输入" maxlength="50" id="soNo"></div>
+              <div class="fi"><div class="fl">MBL No.</div><input type="text" class="fc" placeholder="请输入" maxlength="50" id="mblNo"></div>
+              <div class="fi"><div class="fl">MBL SCAC</div><input type="text" class="fc" placeholder="4位代码" maxlength="4"></div>
+
+              <div class="fi"><div class="fl">AMS HBL No.</div><input type="text" class="fc" placeholder="请输入" maxlength="50"></div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> AMS HBL SCAC</div><input type="text" class="fc" placeholder="e.g. WSJO" maxlength="4" value="WSJO" id="amsScac"></div>
+
+              <div class="dv"></div>
+
+              <div class="fi"><div class="fl"><span class="rq">*</span> 截单时间 (SI Cut-off)</div><input type="datetime-local" class="fc" id="siCut"></div>
+              <div class="fi"><div class="fl">截港时间 (CY Cut-off)</div><input type="datetime-local" class="fc" id="cyCut"></div>
+              <div class="fi"><div class="fl">最早提箱时间 (Earliest Pickup)</div><input type="datetime-local" class="fc"></div>
+              <div class="fi"><div class="fl">VGM 截止时间 (VGM Deadline)</div><input type="datetime-local" class="fc"></div>
+
+              <div class="dv"></div>
+
+              <div class="fi s2"><div class="fl">舱位备注 (Booking Remark)</div><textarea class="fc" rows="2" placeholder="请输入"></textarea></div>
+              <div class="fi s2"><div class="fl">其他备注 (Other Remark)</div><textarea class="fc" rows="2" placeholder="请输入"></textarea><div class="cc">0/300</div></div>
+            </div>
+          </div>
+        </div>
+
+      <!-- ================================================================ -->
+      <!-- 第6层：责任人与备注                                               -->
+      <!-- ================================================================ -->
+        <div class="section" id="sec6">
+          <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>责任人与备注 (Personnel &amp; Notes)</h3><span class="tgl">▾</span></div>
+          <div class="sec-bd">
+            <div class="fg">
+              <div class="fi"><div class="fl"><span class="rq">*</span> 客服人员 (CS Rep.)</div><select class="fc" id="cs"><option value="">请选择</option><option>王晓丽</option><option>张美玲</option><option>李芳</option></select></div>
+              <div class="fi"><div class="fl">商务人员 (Sales Rep.)</div><select class="fc"><option value="">请选择</option><option>陈志强</option><option>刘伟</option><option>赵磊</option></select></div>
+              <div class="fi"><div class="fl">配载 (Stowage)</div><select class="fc"><option value="">请选择</option><option>周文斌</option><option>吴明</option></select></div>
+              <div class="fi"><div class="fl"><span class="rq">*</span> 委托时间 (Booking Date)</div><input type="datetime-local" class="fc" value="2026-08-18T10:00" id="wtTime"></div>
+
+              <div class="dv"></div>
+
+              <div class="fi"><div class="fl"><span class="rq">*</span> 联系人 (Contact)</div><input type="text" class="fc" value="李龙久" id="contact"></div>
+              <div class="fi"><div class="fl">联系电话 (Phone)</div><input type="text" class="fc" placeholder="请输入"></div>
+              <div class="fi"><div class="fl">邮箱 (Email)</div><input type="email" class="fc" value="leonli@wydgroup.com"></div>
+              <div class="fi"><div class="fl">联系人地址 (Address)</div><input type="text" class="fc" value="浙江省宁波市鄞州区嘉会街288号 (29-1)-(29-7)"></div>
+
+              <div class="dv"></div>
+
+              <div class="fi s2">
+                <div class="fl">作业指令 (Op. Instruction)</div>
+                <div style="margin-bottom:4px;">
+                  <select class="fc" id="opIns" onchange="addIns()"><option value="">选择常用指令...</option><option value="直拼，不可拆柜">直拼，不可拆柜</option><option value="需要商检，提前准备通关单">需要商检，提前准备通关单</option><option value="危险品，需DG申报">危险品，需DG申报</option><option value="冷柜，温度设置 -18°C">冷柜，温度设置 -18°C</option><option value="货到即发，不等其他货">货到即发，不等其他货</option></select>
+                </div>
+                <div id="insList" style="display:flex;flex-wrap:wrap;gap:4px;"></div>
+              </div>
+              <div class="fi s2"><div class="fl">订舱要求 (Booking Req.)</div><textarea class="fc" placeholder="特殊订舱要求..." rows="2"></textarea><div class="cc">0/500</div></div>
+            </div>
+
+            <div style="margin-top:12px;">
+              <div class="sub-label">私人笔记 (Private Notes) <span style="font-weight:400;color:var(--text-sec);font-size:10px;margin-left:4px;">仅创建人可见</span></div>
+              <div id="noteList" style="padding:0 20px;">
+                <div class="note-item" id="note-0">
+                  <div class="note-icon">🔒</div>
+                  <div class="note-body">
+                    <div class="note-text">客户要求务必在8月25日前放舱，否则要走MSC替代方案。价格敏感，不要主动报保险费。</div>
+                    <div class="note-meta"><span class="note-status s-pending">待处理</span> 李龙久 · 2026-08-18 10:00</div>
+                    <div class="note-actions">
+                      <span class="note-act" onclick="noteStatus(this,'progress')">📋 进行中</span>
+                      <span class="note-act act-done" onclick="noteStatus(this,'done')">✅ 已完成</span>
+                      <span class="note-act act-del" onclick="delNote(this)">🗑 删除</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="note-input-wrap">
+                <textarea class="fc" id="noteInput" placeholder="添加私人笔记..." rows="1"></textarea>
+                <button class="btn-sm" onclick="addNote()">添加</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <!-- ================================================================ -->
+      <!-- 自选模式：订单信息                                                -->
+      <!-- ================================================================ -->
+      <!-- 自选模式：客户信息（固定楼层） -->
+      <div id="dsWrap" style="position:relative;">
+      <div class="section biz-hide cust-floor" id="secCustClient">
+        <div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>客户信息 (Client Information)</h3><span class="tgl">▾</span></div>
+        <div class="sec-bd">
+          <div class="fg" style="grid-template-columns:repeat(2,1fr);">
+            <div class="fi">
+              <div class="fl"><span class="rq">*</span> 委托单位 (Booking Party)</div>
+              <select class="fc"><option value="">请选择委托单位</option><option>宁波三和纺织进出口有限公司</option><option>上海华谷电子科技有限公司</option><option>深圳市大疆创新科技</option></select>
+            </div>
+            <div class="fi">
+              <div class="fl"><span class="rq">*</span> 结算单位 (Billing Entity)</div>
+              <select class="fc"><option value="">请选择结算单位</option><option>国际物流（深圳）物流有限公司</option><option>国际物流（宁波）物流有限公司</option></select>
+            </div>
+            <div class="fi">
+              <div class="fl">客户编号 (Customer No.)</div>
+              <div class="fc-cnt"><input type="text" class="fc" placeholder="请填写"><span class="cnt">0/300</span></div>
+            </div>
+            <div class="fi">
+              <div class="fl">原始客户编号 (Original Cust. No.)</div>
+              <div class="fc-cnt"><input type="text" class="fc" placeholder="请填写"><span class="cnt">0/50</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 自选模式：动态楼层容器（根据服务配置生成） -->
+      <div id="customFloors"></div>
+      <!-- 下游锁定遮罩：服务组合不合格时盖住客户信息+自选楼层，只能切换/改服务 -->
+      <div id="dsLock" class="ds-lock">
+        <div class="ds-lock-card">
+          <div class="match-hint" id="matchHint">
+            <span class="mh-icon">💡</span>
+            <span class="mh-text">所选服务与标准服务 <span class="mh-type" id="matchTypeName"></span> 一致，需切换到标准模式才能继续填写。</span>
+            <button class="mh-btn" onclick="doMatchSwitch()">切换标准模式</button>
+          </div>
+          <div class="match-hint block-hint" id="blockHint">
+            <span class="mh-icon">⚠️</span>
+            <span class="mh-text">所选服务组合暂不支持，请返回上方调整所选服务后再继续。</span>
+          </div>
+        </div>
+      </div>
+      </div><!-- /dsWrap -->
+
+      <!-- ================================================================ -->
+      <!-- 结算单模式                                                       -->
+      <!-- ================================================================ -->
+      <div class="section biz-hide" id="secSettle">
+        <div class="sec-hd"><div class="sec-dot"></div><h3>结算信息 (Settlement)</h3></div>
+        <div class="sec-bd">
+          <div class="fg" style="grid-template-columns:1fr 1fr;">
+            <div class="fi">
+              <div class="fl"><span class="rq">*</span> 委托单位 (Booking Party)</div>
+              <select class="fc"><option value="">请选择委托单位</option><option>宁波三和纺织进出口有限公司</option><option>上海华谷电子科技有限公司</option><option>深圳市大疆创新科技</option></select>
+            </div>
+            <div class="fi">
+              <div class="fl"><span class="rq">*</span> 结算单位 (Billing Entity)</div>
+              <select class="fc"><option value="">请选择结算单位</option><option>国际物流（深圳）物流有限公司</option><option>国际物流（宁波）物流有限公司</option></select>
+            </div>
+            <div class="fi">
+              <div class="fl">客户编号 (Customer No.)</div>
+              <div class="fc-cnt"><input type="text" class="fc" placeholder="请填写"><span class="cnt">0/300</span></div>
+            </div>
+            <div class="fi">
+              <div class="fl">原始客户编号 (Original Cust. No.)</div>
+              <div class="fc-cnt"><input type="text" class="fc" placeholder="请填写原始客户编号"><span class="cnt">0/50</span></div>
+            </div>
+            <div class="fi s2">
+              <div class="fl">客户备注 (Customer Remark)</div>
+              <textarea class="fc" rows="3" placeholder="请填写客户备注"></textarea><div class="cc">0/500</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+
+    <!-- Split handle -->
+    <div class="split-handle" id="splitHandle"></div>
+
+    <!-- Reference Panel -->
+    <div class="ref-panel" id="refPanel">
+      <div class="rp-header">
+        <span class="rp-title">参考资料 (Reference)</span>
+        <div class="rp-file-tabs-inline" id="rpFileTabs"></div>
+        <div class="rp-tabs-inline">
+          <div class="rp-tab-i active" data-tab="files" onclick="switchRpTab('files')">文件 (Files)</div>
+          <div class="rp-tab-i" data-tab="text" onclick="switchRpTab('text')">文本 (Text)</div>
+        </div>
+        <button class="rp-close" onclick="toggleRefPanel()" title="关闭面板">&times;</button>
+      </div>
+      <div class="rp-body">
+        <!-- Files area -->
+        <div class="rp-files-area active" id="rpFilesArea">
+          <div class="rp-dropzone" id="rpDropzone" onclick="triggerFileImport()">
+            <div class="dz-icon">📂</div>
+            <div class="dz-text">拖拽文件到此处，或点击上传</div>
+            <div class="dz-hint">支持 PDF / Excel / Word / 图片</div>
+          </div>
+          <input type="file" id="rpFileInput" style="display:none;" multiple accept=".pdf,.xlsx,.xls,.csv,.docx,.png,.jpg,.jpeg,.gif,.bmp" onchange="handleFileSelect(this.files)">
+          <div class="rp-file-viewer" id="rpFileViewer" style="display:none;"></div>
+          <div class="rp-sheet-tabs" id="rpSheetTabs" style="display:none;"></div>
+        </div>
+        <!-- Text area -->
+        <div class="rp-text-area" id="rpTextArea">
+          <textarea placeholder="在此粘贴文本内容...&#10;&#10;例如：订舱确认邮件、客户需求备注、价格清单等" id="rpTextInput"></textarea>
+        </div>
+      </div>
+    </div>
+
+    </div><!-- /split-container -->
+  </div>
+</div>
+
+<div class="bbar" id="bbar">
+  <button class="btn btn-default" onclick="">关闭</button>
+  <button class="btn btn-primary" onclick="doSave()">保存</button>
+</div>
+<div class="toast" id="toastEl"></div>
+
+<script>
+/* ===== EXCEL RULE CONFIG ADAPTER =====
+   业务规则和业务编码来自 Excel 生成文件；这里只维护页面 DOM / 历史控件 ID 的技术映射。 */
+var FMS_RULE_CONFIG=window.FMS_RULE_CONFIG;
+var FMS_PAGE_ADAPTER=window.FMS_PAGE_ADAPTER;
+if(!FMS_RULE_CONFIG||!FMS_PAGE_ADAPTER){
+  throw new Error('FMS 内嵌规则配置未加载，请重新运行 tools/excel_to_fms_rules.py 更新本页面');
+}
+function fmsDictMap(items){var out={};(items||[]).forEach(function(item){out[item.code]=item;});return out;}
+var FMS_SERVICE_DICT=fmsDictMap(FMS_RULE_CONFIG.dictionaries.services);
+var FMS_LOGISTICS_DICT=fmsDictMap(FMS_RULE_CONFIG.dictionaries.logisticsTypes);
+function fmsMapped(mapName,code){
+  var value=(FMS_PAGE_ADAPTER[mapName]||{})[code];
+  if(!value)throw new Error('页面适配缺少 '+mapName+'.'+code);
+  return value;
+}
+function fmsServiceName(code){var item=FMS_SERVICE_DICT[code];return item?item.name:code;}
+function fmsStandardRules(){return (FMS_RULE_CONFIG.standardServiceRules||[]).map(function(rule){return {
+  ruleId:rule.ruleId,
+  type:fmsMapped('logisticsTypeCodes',rule.logisticsTypeCode),
+  mode:fmsMapped('transportModeCodes',rule.transportModeCode),
+  terms:rule.shippingTermCodes.slice(),
+  services:rule.services.slice().sort(function(a,b){return a.order-b.order;})
+};});}
+function fmsStandardSectionConfig(){
+  var out={};
+  (FMS_RULE_CONFIG.sectionRules.standard||[]).forEach(function(rule){
+    var ids=rule.sections.slice().sort(function(a,b){return a.order-b.order;}).map(function(item){return fmsMapped('standardSectionIds',item.sectionCode);});
+    rule.logisticsTypeCodes.forEach(function(typeCode){out[fmsMapped('logisticsTypeCodes',typeCode)]=ids.slice();});
+  });
+  out.default=(out.ocean||['sec2','sec3','sec4','sec5','sec6']).slice();
+  return out;
+}
+function fmsSelfSectionConfig(){
+  var grouped={},order=[];
+  (FMS_RULE_CONFIG.sectionRules.selfServiceMappings||[]).forEach(function(item){
+    var sectionId=fmsMapped('selfSectionIds',item.sectionCode);
+    if(!grouped[sectionId]){grouped[sectionId]={section:sectionId,services:[]};order.push(sectionId);}
+    grouped[sectionId].services.push(fmsMapped('selfServiceIds',item.serviceCode));
+  });
+  return order.map(function(sectionId){return grouped[sectionId];});
+}
+function fmsMatchRules(){return (FMS_RULE_CONFIG.selfServiceRules.switchToStandard||[]).map(function(rule){
+  var target=rule.targetLogisticsTypeCode;
+  return {when_contains:rule.whenContainsServiceCodes.map(function(code){return fmsMapped('selfServiceIds',code);}),switch_to:fmsMapped('logisticsTypeCodes',target),label:(FMS_LOGISTICS_DICT[target]||{}).name||target};
+});}
+function fmsAllowedRules(){return (FMS_RULE_CONFIG.selfServiceRules.allowedCombinations||[]).map(function(rule){return {
+  ruleId:rule.ruleId,
+  services:rule.serviceCodes.map(function(code){return fmsMapped('selfServiceIds',code);})
+};});}
+function fmsServiceOptions(){
+  var out={};
+  (FMS_RULE_CONFIG.serviceOptions||[]).forEach(function(item){
+    var ids=[];
+    ['standardServiceIds','selfServiceIds'].forEach(function(mapName){
+      var id=(FMS_PAGE_ADAPTER[mapName]||{})[item.serviceCode];
+      if(id&&ids.indexOf(id)<0)ids.push(id);
+    });
+    ids.forEach(function(id){
+      out[id]={
+        serviceCode:item.serviceCode,
+        serviceName:item.serviceName||fmsServiceName(item.serviceCode),
+        stageCode:item.stageCode,
+        serviceOrder:item.serviceOrder||0,
+        groups:(item.groups||[]).slice().sort(function(a,b){return a.order-b.order;})
+      };
+    });
+  });
+  return out;
+}
+
+/* ===== 楼层导航 ===== */
+function scrollToSec(id){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var offset=130;
+  var contentEl=document.querySelector('.content');
+  var top=el.offsetTop-offset;
+  contentEl.scrollTo({top:top,behavior:'smooth'});
+}
+// 滚动高亮
+(function(){
+  var items=document.querySelectorAll('.step-item');
+  var secs=[...items].map(function(it){return document.getElementById(it.dataset.target);});
+  var ticking=false;
+  var contentEl=document.querySelector('.content');
+  contentEl.addEventListener('scroll',function(){
+    if(!ticking){requestAnimationFrame(function(){
+      var offset=140;
+      var activeIdx=0;
+      secs.forEach(function(sec,i){if(sec&&sec.getBoundingClientRect().top<=offset)activeIdx=i;});
+      items.forEach(function(it,i){it.classList.remove('active','done');if(i===activeIdx)it.classList.add('active');else if(i<activeIdx)it.classList.add('done');});
+      ticking=false;
+    });ticking=true;}
+  });
+})();
+
+/* ===== SERVICE CONFIG (from booking + custom) ===== */
+var SVC_CFG={
+  ocean:{modes:[{v:'FCL',l:'FCL 整柜'},{v:'LCL',l:'LCL 拼箱'}],dirs:['CY','Door','CFS','RAMP'],common:['CY-CY','CY-Door','Door-Door','Door-CY','CFS-CFS'],svcs:{
+    origin:[
+      {id:'trailer',n:'拖车'},
+      {id:'exc',n:'出口报关及申报'},
+      {id:'ows',n:'库内服务'},
+      {id:'owh',n:'仓储/货物暂存'}
+    ],intl:[
+      {id:'ocean_freight',n:'国际海运',lock:1},
+      {id:'land_freight',n:'国际陆运'},
+      {id:'air_freight',n:'国际空运'},
+      {id:'exp_freight',n:'国际快递'},
+      {id:'rail_freight',n:'铁路运输'}
+    ],dest:[
+      {id:'imc',n:'申报及进口清关'},
+      {id:'dtrailer',n:'拖车',dep:'imc'},
+      {id:'dload',n:'装箱服务',dep:'imc'},
+      {id:'dwh',n:'仓储/货物暂存',dep:'imc'},
+      {id:'dlv',n:'送货上门',dep:'imc'}
+    ],vas:[
+      {id:'ins',n:'货运保险代理'},
+      {id:'doc',n:'单证服务'},
+      {id:'bond',n:'目的港缴税代办'}
+    ]}},
+  land:{modes:[{v:'FTL',l:'FTL 整车'},{v:'LTL',l:'LTL 零担'},{v:'RAIL',l:'铁路/中欧班列'},{v:'MULTI',l:'公铁联运'}],dirs:['Door','CY','RAMP','CFS'],common:['Door-Door','CY-CY','RAMP-RAMP','Door-CY','CY-Door'],svcs:{
+    origin:[
+      {id:'trailer',n:'拖车'},
+      {id:'exc',n:'出口报关及申报'},
+      {id:'ows',n:'库内服务'},
+      {id:'owh',n:'仓储/货物暂存'}
+    ],intl:[
+      {id:'ocean_freight',n:'国际海运'},
+      {id:'land_freight',n:'国际陆运',lock:1},
+      {id:'air_freight',n:'国际空运'},
+      {id:'exp_freight',n:'国际快递'},
+      {id:'rail_freight',n:'铁路运输'}
+    ],dest:[
+      {id:'imc',n:'申报及进口清关'},
+      {id:'dtrailer',n:'拖车',dep:'imc'},
+      {id:'dload',n:'装箱服务',dep:'imc'},
+      {id:'dwh',n:'仓储/货物暂存',dep:'imc'},
+      {id:'dlv',n:'送货上门',dep:'imc'}
+    ],vas:[
+      {id:'ins',n:'货运保险代理'},
+      {id:'doc',n:'单证服务'},
+      {id:'bond',n:'目的港缴税代办'}
+    ]}},
+  air:{modes:[{v:'GCR',l:'普货'},{v:'EXP',l:'空运快线'},{v:'CHR',l:'包机'},{v:'CONS',l:'集拼'}],dirs:['Airport','Door','CFS'],common:['Airport-Airport','Airport-Door','Door-Door','Door-Airport','CFS-CFS'],svcs:{
+    origin:[
+      {id:'trailer',n:'拖车'},
+      {id:'exc',n:'出口报关及申报'},
+      {id:'ows',n:'库内服务'},
+      {id:'owh',n:'仓储/货物暂存'}
+    ],intl:[
+      {id:'ocean_freight',n:'国际海运'},
+      {id:'land_freight',n:'国际陆运'},
+      {id:'air_freight',n:'国际空运',lock:1},
+      {id:'exp_freight',n:'国际快递'},
+      {id:'rail_freight',n:'铁路运输'}
+    ],dest:[
+      {id:'imc',n:'申报及进口清关'},
+      {id:'dtrailer',n:'拖车',dep:'imc'},
+      {id:'dload',n:'装箱服务',dep:'imc'},
+      {id:'dwh',n:'仓储/货物暂存',dep:'imc'},
+      {id:'dlv',n:'送货上门',dep:'imc'}
+    ],vas:[
+      {id:'ins',n:'货运保险代理'},
+      {id:'doc',n:'单证服务'},
+      {id:'bond',n:'目的港缴税代办'}
+    ]}},
+  express:{modes:[{v:'DHL',l:'DHL'},{v:'FEDEX',l:'FedEx'},{v:'UPS',l:'UPS'},{v:'TNT',l:'TNT'},{v:'SF',l:'顺丰国际'},{v:'OTHER',l:'其他'}],dirs:['Door'],common:['Door-Door'],svcs:{
+    origin:[
+      {id:'trailer',n:'拖车'},
+      {id:'exc',n:'出口报关及申报'},
+      {id:'ows',n:'库内服务'},
+      {id:'owh',n:'仓储/货物暂存'}
+    ],intl:[
+      {id:'ocean_freight',n:'国际海运'},
+      {id:'land_freight',n:'国际陆运'},
+      {id:'air_freight',n:'国际空运'},
+      {id:'exp_freight',n:'国际快递',lock:1},
+      {id:'rail_freight',n:'铁路运输'}
+    ],dest:[
+      {id:'imc',n:'申报及进口清关'},
+      {id:'dtrailer',n:'拖车',dep:'imc'},
+      {id:'dload',n:'装箱服务',dep:'imc'},
+      {id:'dwh',n:'仓储/货物暂存',dep:'imc'},
+      {id:'dlv',n:'送货上门',dep:'imc'}
+    ],vas:[
+      {id:'ins',n:'货运保险代理'},
+      {id:'doc',n:'单证服务'},
+      {id:'bond',n:'目的港缴税代办'}
+    ]}},
+  custom:{modes:[],dirs:[],common:[],svcs:{
+    origin:[
+      {id:'trailer',n:'拖车'},
+      {id:'exc',n:'出口报关及申报'},
+      {id:'ows',n:'库内服务'},
+      {id:'owh',n:'仓储/货物暂存'}
+    ],intl:[
+      {id:'ocean_freight',n:'国际海运'},
+      {id:'land_freight',n:'国际陆运'},
+      {id:'air_freight',n:'国际空运'},
+      {id:'rail_freight',n:'铁路运输'}
+    ],dest:[
+      {id:'imc',n:'申报及进口清关'},
+      {id:'d_trailer',n:'拖车'},
+      {id:'d_load',n:'装箱服务'},
+      {id:'dwh',n:'仓储/货物暂存'},
+      {id:'dlv',n:'送货上门'}
+    ],vas:[
+      {id:'ins',n:'货运保险代理'},
+      {id:'doc',n:'单证服务'},
+      {id:'bond',n:'目的港缴税代办'}
+    ]}}
+};
+var GRP=['origin','intl','dest','vas'];
+var SVC={type:'',mode:'',terms:'',svc:new Set()};
+var SERVICE_OPTIONS=fmsServiceOptions();
+var SERVICE_OPTION_VALUES={};
+
+function clearServiceOptionValues(serviceId){delete SERVICE_OPTION_VALUES[serviceId];}
+function resetAllServiceOptionValues(){SERVICE_OPTION_VALUES={};renderServiceOptions();}
+function orderedSelectedServiceOptions(){
+  var cfg=typeof getCfg==='function'?getCfg():null;
+  var result=[];
+  if(!cfg)return result;
+  var available={};GRP.forEach(function(group){(cfg.svcs[group]||[]).forEach(function(service){available[service.id]=true;});});
+  SVC.svc.forEach(function(id){if(available[id]&&SERVICE_OPTIONS[id])result.push({id:id,config:SERVICE_OPTIONS[id]});});
+  var stageOrder={origin:0,intl:1,destination:2,dest:2,vas:3};
+  return result.sort(function(a,b){
+    var stageDiff=(stageOrder[a.config.stageCode]??99)-(stageOrder[b.config.stageCode]??99);
+    return stageDiff||a.config.serviceOrder-b.config.serviceOrder||a.id.localeCompare(b.id);
+  });
+}
+function optionGroupConfig(serviceId,optionCode){
+  var item=SERVICE_OPTIONS[serviceId];
+  return item&&(item.groups||[]).filter(function(group){return group.optionCode===optionCode;})[0];
+}
+function setServiceOptionValue(serviceId,optionCode,value,checked){
+  var group=optionGroupConfig(serviceId,optionCode);if(!group)return;
+  var serviceValues=SERVICE_OPTION_VALUES[serviceId]||(SERVICE_OPTION_VALUES[serviceId]={});
+  var values=serviceValues[optionCode]||[];
+  if(group.type==='single')values=[value];
+  else if(checked&&values.indexOf(value)<0)values.push(value);
+  else if(!checked)values=values.filter(function(item){return item!==value;});
+  serviceValues[optionCode]=values;
+  var groupEl=document.querySelector('.service-option-group[data-service-id="'+serviceId+'"][data-option-code="'+optionCode+'"]');
+  if(groupEl)groupEl.classList.remove('invalid');
+}
+function renderServiceOptions(){
+  var content=document.getElementById('serviceOptionsContent');if(!content)return;
+  var entries=orderedSelectedServiceOptions();
+  var count=entries.reduce(function(total,item){return total+(item.config.groups||[]).length;},0);
+  var badge=document.getElementById('serviceOptionsCount');
+  if(badge){badge.textContent=count;badge.classList.toggle('show',count>0);}
+  content.innerHTML='';
+  if(!count){content.innerHTML='<div class="service-options-empty">所选服务无需额外选项</div>';return;}
+  var list=document.createElement('div');list.className='service-option-groups';
+  entries.forEach(function(item){
+    (item.config.groups||[]).forEach(function(group){
+      var row=document.createElement('div');row.className='service-option-group';
+      row.dataset.serviceId=item.id;row.dataset.optionCode=group.optionCode;
+      var label=document.createElement('div');label.className='service-option-label';
+      label.textContent=item.config.serviceName+' · '+group.label;
+      if(group.required){var required=document.createElement('span');required.className='service-option-required';required.textContent='*';required.title='必填';required.setAttribute('aria-label','必填');label.appendChild(required);}
+      var choices=document.createElement('div');choices.className='service-option-choices';
+      var selected=((SERVICE_OPTION_VALUES[item.id]||{})[group.optionCode]||[]);
+      (group.choices||[]).slice().sort(function(a,b){return a.order-b.order;}).forEach(function(choice){
+        var optionLabel=document.createElement('label');optionLabel.className='service-option-choice';
+        var input=document.createElement('input');input.type=group.type==='multi'?'checkbox':'radio';
+        input.name='service-option-'+item.id+'-'+group.optionCode;input.value=choice.value;input.checked=selected.indexOf(choice.value)>=0;
+        input.onchange=function(){setServiceOptionValue(item.id,group.optionCode,choice.value,input.checked);};
+        optionLabel.appendChild(input);optionLabel.appendChild(document.createTextNode(choice.label));choices.appendChild(optionLabel);
+      });
+      row.appendChild(label);row.appendChild(choices);list.appendChild(row);
+    });
+  });
+  content.appendChild(list);
+}
+function serializableServiceOptions(){
+  var result={};
+  orderedSelectedServiceOptions().forEach(function(item){
+    var values=SERVICE_OPTION_VALUES[item.id]||{},groups={};
+    (item.config.groups||[]).forEach(function(group){var selected=(values[group.optionCode]||[]).slice();if(selected.length)groups[group.optionCode]=selected;});
+    if(Object.keys(groups).length)result[item.id]=groups;
+  });
+  return result;
+}
+function restoreServiceOptionValues(saved){
+  SERVICE_OPTION_VALUES={};saved=saved||{};
+  orderedSelectedServiceOptions().forEach(function(item){
+    var incoming=saved[item.id]||{},validGroups={};
+    (item.config.groups||[]).forEach(function(group){
+      var allowed=(group.choices||[]).map(function(choice){return choice.value;});
+      var values=Array.isArray(incoming[group.optionCode])?incoming[group.optionCode]:(incoming[group.optionCode]?[incoming[group.optionCode]]:[]);
+      values=values.filter(function(value){return allowed.indexOf(value)>=0;});
+      if(group.type==='single')values=values.slice(0,1);
+      if(values.length)validGroups[group.optionCode]=values;
+    });
+    if(Object.keys(validGroups).length)SERVICE_OPTION_VALUES[item.id]=validGroups;
+  });
+}
+function validateServiceOptions(){
+  var errors=[];
+  orderedSelectedServiceOptions().forEach(function(item){
+    (item.config.groups||[]).forEach(function(group){
+      var values=((SERVICE_OPTION_VALUES[item.id]||{})[group.optionCode]||[]);
+      if(group.required&&!values.length)errors.push({serviceId:item.id,optionCode:group.optionCode,message:'请选择：'+item.config.serviceName+' · '+group.label});
+    });
+  });
+  return errors;
+}
+function showServiceOptionError(error){
+  renderServiceOptions();
+  var area=document.getElementById('serviceOptionsArea');
+  var group=document.querySelector('.service-option-group[data-service-id="'+error.serviceId+'"][data-option-code="'+error.optionCode+'"]');
+  if(group){group.classList.add('invalid');var first=group.querySelector('input');if(first)first.focus({preventScroll:true});}
+  if(area)area.scrollIntoView({behavior:'smooth',block:'center'});
+  toast(error.message,'warn',3600);
+}
+
+/* ===== SECTION ARCHITECTURE =====
+   规则层只决定“展示哪些 Section”；插件层只负责 Section 自身如何渲染。
+   标准物流类型使用固定组合；自选模式根据服务规则组合独立 Section。 */
+var SECTION_REGISTRY={};
+var SECTION_COMPOSITION_RULES={
+  standard:fmsStandardSectionConfig(),
+  custom:{
+    base:['secCustClient'],
+    services:[]
+  }
+};
+
+function registerSectionPlugin(plugin){
+  if(!plugin||!plugin.id)throw new Error('Section plugin requires id');
+  SECTION_REGISTRY[plugin.id]=plugin;
+  return plugin;
+}
+function getSectionPlugin(id){return SECTION_REGISTRY[id]||null;}
+function sectionControlValue(section,selector,label){
+  var el=section&&section.querySelector(selector);if(!el)return '';
+  var value='';
+  if(el.tagName==='SELECT'){
+    if(el.selectedIndex<=0)return '';
+    value=el.options[el.selectedIndex].text;
+  }else value=el.value;
+  value=(value||'').trim();
+  return value?(label?label+'：'+value:value):'';
+}
+function sectionControlValueOrDemo(section,selector,label,demo){
+  return sectionControlValue(section,selector,label)||(demo?(label?label+'：'+demo:demo):'');
+}
+function sectionRawValue(section,selector,demo){
+  var el=section&&section.querySelector(selector),value='';
+  if(el){
+    if(el.tagName==='SELECT'){
+      if(el.selectedIndex>0)value=el.options[el.selectedIndex].text;
+    }else value=el.value;
+  }
+  return (value||demo||'').trim();
+}
+function compactDateTime(value){
+  value=(value||'').trim();
+  return /^\d{4}-\d{2}-\d{2}T/.test(value)?value.slice(5).replace('T',' '):value;
+}
+function compactNumber(value){
+  var n=Number(String(value||'').replace(/,/g,''));
+  return Number.isFinite(n)?n.toLocaleString('en-US',{maximumFractionDigits:2}):value;
+}
+function selectCode(value){return (value||'').split(' ')[0];}
+/* 摘要统一规则：不同业务信息组用中文逗号；同组复合指标按业务语义自行组合。 */
+function joinSectionSummary(groups){return groups.filter(function(x){return !!x;}).join('，');}
+function joinMetricSummary(metrics){return metrics.filter(function(x){return !!x;}).join(' / ');}
+function routePortCode(value){
+  value=(value||'').trim();
+  return /^[A-Z]{5}(?:\s|$)/.test(value)?value.split(' ')[0]:value;
+}
+function routeSummary(origin,destination,icon){
+  return routePortCode(origin)+' '+(icon||'→')+' '+routePortCode(destination);
+}
+function orderedSelectedServiceNames(){
+  var cfg=typeof getCfg==='function'?getCfg():null;
+  if(!cfg)return [];
+  var names=[];
+  GRP.forEach(function(group){(cfg.svcs[group]||[]).forEach(function(service){if(SVC.svc.has(service.id))names.push(service.n);});});
+  return names;
+}
+function dynamicFieldValue(section,index,demo){
+  var fields=section?section.querySelectorAll('.sec-bd .fi'):[];
+  var field=fields[index];if(!field)return demo||'';
+  var control=field.querySelector('input:not([type="file"]),select,textarea');if(!control)return demo||'';
+  var value='';
+  if(control.tagName==='SELECT'){
+    if(control.selectedIndex>0)value=control.options[control.selectedIndex].text;
+  }else value=control.value;
+  return (value||demo||'').trim();
+}
+function ensureSectionSummary(section){
+  if(!section)return null;
+  var header=section.querySelector(':scope > .sec-hd');if(!header)return null;
+  var summary=header.querySelector('.sec-summary');
+  if(!summary){
+    summary=document.createElement('span');summary.className='sec-summary empty';
+    var toggle=header.querySelector('.tgl');header.insertBefore(summary,toggle||null);
+  }
+  return summary;
+}
+function refreshSectionSummary(id){
+  var plugin=getSectionPlugin(id),section=document.getElementById(id);if(!plugin||!section)return;
+  var summary=ensureSectionSummary(section);if(!summary)return;
+  var text=plugin.getSummary?(plugin.getSummary(section)||''):'';
+  summary.textContent=text||'待完善';
+  summary.classList.toggle('empty',!text);
+  summary.title=text||'';
+}
+function refreshAllSectionSummaries(){
+  Object.keys(SECTION_REGISTRY).forEach(refreshSectionSummary);
+}
+function registerStaticSectionPlugin(id,title,getSummary){
+  registerSectionPlugin({
+    id:id,
+    kind:'static',
+    title:title||'',
+    getSummary:getSummary||function(){return '';},
+    setVisible:function(visible){
+      var el=document.getElementById(id);
+      if(el)el.classList.toggle('biz-hide',!visible);
+    }
+  });
+}
+registerStaticSectionPlugin('sec1','服务信息',function(){
+  if(isTypeCustom())return joinSectionSummary(['自选'].concat(orderedSelectedServiceNames()));
+  var type=({ocean:'海运',land:'陆运',air:'空运',express:'国际快递'})[SVC.type]||'';
+  var mode=document.querySelector('#modeChips .mode-chip.selected');
+  var services=orderedSelectedServiceNames();
+  return joinSectionSummary([type||'海运',mode?mode.textContent.trim():'FCL 整柜',SVC.terms||'CY-CY',services.length?services.join(' + '):'国际海运']);
+});
+registerStaticSectionPlugin('sec2','客户信息',function(section){return joinSectionSummary([
+  '委托：'+sectionRawValue(section,'#bookingParty','宁波三和纺织进出口有限公司'),
+  '结算：'+sectionRawValue(section,'#billingEntity','国际物流（深圳）物流有限公司')
+]);});
+registerStaticSectionPlugin('sec3','航线与船期',function(section){
+  var pol=sectionRawValue(section,'#pol','CNNGB - 宁波/舟山');
+  var pod=sectionRawValue(section,'#pod','USLAX - 洛杉矶');
+  return joinSectionSummary([
+    routeSummary(pol,pod,'→'),
+    'ETD '+compactDateTime(sectionRawValue(section,'#etd','2026-08-25')),
+    'ETA '+compactDateTime(sectionRawValue(section,'#eta','2026-09-12'))
+  ]);
+});
+registerStaticSectionPlugin('sec4','货物与集装箱',function(section){
+  var containers=[];
+  section.querySelectorAll('#ctnTbl tbody tr').forEach(function(row){
+    var type=row.cells[1]?.querySelector('select')?.value||'';
+    var qty=row.cells[2]?.querySelector('input')?.value||'';
+    if(type&&qty)containers.push(type+' × '+qty);
+  });
+  var packages=sectionRawValue(section,'#pkgs','120');
+  var packing=selectCode(sectionRawValue(section,'#packingType','CARTONS'));
+  var weight=compactNumber(sectionRawValue(section,'#gw','3800'));
+  var volume=compactNumber(sectionRawValue(section,'#cbm','56.50'));
+  return joinSectionSummary([
+    '柜型：'+(containers.length?containers.join(' + '):'40GP × 2'),
+    '货物：'+joinMetricSummary([compactNumber(packages)+' '+packing,weight+' KG',volume+' CBM'])
+  ]);
+});
+registerStaticSectionPlugin('sec5','单证与舱位',function(section){return joinSectionSummary([
+  selectCode(sectionRawValue(section,'#blType','HBL')),
+  'MBL '+sectionRawValue(section,'#mblNo','MAEU260812345'),
+  'S/O '+sectionRawValue(section,'#soNo','SO-NGB-20260825-01'),
+  'SI '+compactDateTime(sectionRawValue(section,'#siCut','2026-08-23T18:00')),
+  'CY '+compactDateTime(sectionRawValue(section,'#cyCut','2026-08-24T16:00'))
+]);});
+registerStaticSectionPlugin('sec6','责任人与备注',function(section){
+  var pending=section.querySelectorAll('#noteList .note-item:not(.done)').length;
+  return joinSectionSummary([
+    '客服：'+sectionRawValue(section,'#cs','王晓丽'),
+    '联系人：'+sectionRawValue(section,'#contact','李龙久'),
+    '委托：'+compactDateTime(sectionRawValue(section,'#wtTime','2026-08-18T10:00')),
+    pending?'待办笔记：'+pending:''
+  ]);
+});
+registerStaticSectionPlugin('secCustClient','客户信息',function(section){return joinSectionSummary([
+  '委托：'+sectionRawValue(section,'.fi:nth-child(1) select','宁波三和纺织进出口有限公司'),
+  '结算：'+sectionRawValue(section,'.fi:nth-child(2) select','国际物流（深圳）物流有限公司')
+]);});
+registerStaticSectionPlugin('secSettle','结算信息',function(section){return joinSectionSummary([
+  '委托：'+sectionRawValue(section,'.fi:nth-child(1) select','宁波三和纺织进出口有限公司'),
+  '结算：'+sectionRawValue(section,'.fi:nth-child(2) select','国际物流（深圳）物流有限公司')
+]);});
+
+function refreshSummaryFromEvent(event){
+  var section=event.target.closest&&event.target.closest('.section');
+  if(section&&getSectionPlugin(section.id))refreshSectionSummary(section.id);
+}
+document.addEventListener('input',refreshSummaryFromEvent);
+document.addEventListener('change',refreshSummaryFromEvent);
+
+function standardSectionIds(type){
+  return SECTION_COMPOSITION_RULES.standard[type]||SECTION_COMPOSITION_RULES.standard.default;
+}
+function allStandardSectionIds(){
+  var all=[];
+  Object.keys(SECTION_COMPOSITION_RULES.standard).forEach(function(type){
+    SECTION_COMPOSITION_RULES.standard[type].forEach(function(id){if(all.indexOf(id)<0)all.push(id);});
+  });
+  return all;
+}
+function setRegisteredSectionVisible(id,visible){
+  var plugin=getSectionPlugin(id);
+  if(plugin&&plugin.setVisible)plugin.setVisible(visible);
+}
+function composeStandardSections(type,visible){
+  var active=standardSectionIds(type);
+  allStandardSectionIds().forEach(function(id){
+    setRegisteredSectionVisible(id,!!visible&&active.indexOf(id)>=0);
+  });
+}
+function clearCustomSectionComposition(){
+  document.getElementById('customFloors').innerHTML='';
+  document.getElementById('custNavArea').innerHTML='';
+}
+
+document.addEventListener('click',function(){document.querySelectorAll('.ms-trigger.open').forEach(function(t){t.classList.remove('open');});document.querySelectorAll('.ms-panel.open').forEach(function(p){p.classList.remove('open');});});
+
+function isTypeCustom(){return document.getElementById('typeCustom').checked;}
+
+function switchToCustomMode(){
+  // 标准物流类型是固定 Section 组合，自选模式统一隐藏该组合
+  composeStandardSections(SVC.type,false);
+  // Hide standard nav items & connectors
+  document.querySelectorAll('.std-nav').forEach(function(el){el.classList.add('biz-hide');});
+  // Show custom base sections through the same plugin interface
+  SECTION_COMPOSITION_RULES.custom.base.forEach(function(id){setRegisteredSectionVisible(id,true);});
+  // Reset match hint
+  _matchHintShown=false;_matchHintDismissed=false;_matchedType=null;
+  document.getElementById('matchHint').classList.remove('show');
+  // Render dynamic floors based on selected services
+  renderCustomFloors();
+}
+function switchToStandardMode(){
+  // Show the fixed Section composition for the selected logistics type
+  composeStandardSections(SVC.type,true);
+  document.querySelectorAll('.std-nav').forEach(function(el){el.classList.remove('biz-hide');});
+  // Hide custom floors and nav
+  SECTION_COMPOSITION_RULES.custom.base.forEach(function(id){setRegisteredSectionVisible(id,false);});
+  clearCustomSectionComposition();
+}
+
+/* 检查所有楼层是否有已填写的数据 */
+function hasFormData(){
+  var sections=document.querySelectorAll('#sec2,#sec3,#sec4,#sec5,#sec6,#secCustClient,.cust-floor');
+  var found=false;
+  sections.forEach(function(sec){
+    if(found) return;
+    sec.querySelectorAll('input[type="text"],input[type="number"],input[type="email"],textarea').forEach(function(inp){
+      if(inp.value&&inp.value.trim()&&!inp.defaultValue) found=true;
+    });
+    sec.querySelectorAll('select').forEach(function(sel){
+      if(sel.selectedIndex>0&&sel.value!==sel.options[0].value) found=true;
+    });
+  });
+  return found;
+}
+
+/* 清空所有楼层表单数据 */
+function clearAllForms(){
+  // 标准楼层 sec2-sec6
+  document.querySelectorAll('#sec2,#sec3,#sec4,#sec5,#sec6').forEach(function(sec){
+    sec.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="file"])').forEach(function(inp){inp.value=inp.defaultValue||'';});
+    sec.querySelectorAll('textarea').forEach(function(ta){ta.value=ta.defaultValue||'';});
+    sec.querySelectorAll('select').forEach(function(sel){sel.selectedIndex=0;});
+  });
+  // 自选客户信息
+  var custSec=document.getElementById('secCustClient');
+  if(custSec){
+    custSec.querySelectorAll('input:not([type="checkbox"]):not([type="radio"]):not([type="file"])').forEach(function(inp){inp.value='';});
+    custSec.querySelectorAll('textarea').forEach(function(ta){ta.value='';});
+    custSec.querySelectorAll('select').forEach(function(sel){sel.selectedIndex=0;});
+  }
+  // 动态楼层（会被 innerHTML 清掉，但以防万一）
+  document.getElementById('customFloors').innerHTML='';
+  document.getElementById('custNavArea').innerHTML='';
+  // 清空作业指令标签
+  var insList=document.getElementById('insList');
+  if(insList) insList.innerHTML='';
+}
+
+function onTypeCustom(){
+  var wasCustom=isTypeCustom();
+  if(wasCustom){
+    clearAllForms();
+    document.querySelectorAll('#typeArea .type-chip').forEach(function(c){c.classList.remove('selected');});
+    SVC.type='custom';SVC.mode='';SVC.terms='';SVC.svc=new Set();
+    document.getElementById('modeWrap').classList.remove('show');
+    document.getElementById('termsArea').classList.remove('show');
+    document.getElementById('termDesc').textContent='';
+    buildSvcPanels();
+    document.getElementById('svcArea').classList.add('show');
+    switchToCustomMode();
+  } else {
+    clearAllForms();
+    SVC.type='';SVC.mode='';SVC.terms='';SVC.svc=new Set();
+    document.getElementById('modeWrap').classList.remove('show');
+    document.getElementById('termsArea').classList.remove('show');
+    document.getElementById('svcArea').classList.remove('show');
+    document.getElementById('termDesc').textContent='';
+    renderTrigsEmpty();
+    switchToStandardMode();
+  }
+}
+
+function selType(el){
+  var newType=el.dataset.v;
+  var wasCustom=document.getElementById('typeCustom').checked||SVC.type==='custom';
+  // 如果已经选中同一个类型且不是从自选切过来，不做任何操作
+  if(SVC.type===newType&&!wasCustom) return;
+  clearAllForms();
+  document.querySelectorAll('#typeArea .type-chip').forEach(function(c){c.classList.remove('selected');});
+  el.classList.add('selected');
+  if(wasCustom){
+    document.getElementById('typeCustom').checked=false;
+    switchToStandardMode();
+  }
+  SVC.type=newType;SVC.mode='';SVC.terms='';SVC.svc=new Set();
+  document.getElementById('termDesc').textContent='';
+
+  buildModes();document.getElementById('modeWrap').classList.add('show');
+  var firstMode=document.querySelector('#modeChips .mode-chip');
+  if(firstMode){firstMode.classList.add('selected');SVC.mode=firstMode.dataset.v;}
+  var c=SVC_CFG[SVC.type];
+  if(c.dirs.length===1&&c.common.length===1){SVC.terms=c.common[0];document.getElementById('termsArea').classList.remove('show');}else{buildTerms();document.getElementById('termsArea').classList.add('show');var firstTerm=document.querySelector('.term-chip:not(.disabled)');if(firstTerm){firstTerm.classList.add('selected');SVC.terms=firstTerm.dataset.v;}}
+  buildSvcPanels();document.getElementById('svcArea').classList.add('show');
+}
+
+function buildModes(){var c=SVC_CFG[SVC.type],a=document.getElementById('modeChips');a.innerHTML='';c.modes.forEach(function(m){var e=document.createElement('div');e.className='mode-chip';e.dataset.v=m.v;e.innerHTML='<span class="mc-dot"></span>'+m.l;e.onclick=function(){selMode(e);};a.appendChild(e);});}
+function selMode(el){if(!SVC.type){toast('请先选择物流类型','warn');return;}document.querySelectorAll('#modeChips .mode-chip').forEach(function(c){c.classList.remove('selected');});el.classList.add('selected');SVC.mode=el.dataset.v;SVC.terms='';var c=SVC_CFG[SVC.type];if(c.dirs.length===1&&c.common.length===1){SVC.terms=c.common[0];document.getElementById('termsArea').classList.remove('show');}else{buildTerms();document.getElementById('termsArea').classList.add('show');var firstTerm=document.querySelector('.term-chip:not(.disabled)');if(firstTerm){firstTerm.classList.add('selected');SVC.terms=firstTerm.dataset.v;}}buildSvcPanels();document.getElementById('svcArea').classList.add('show');}
+
+function buildTerms(){var c=SVC_CFG[SVC.type],cm=document.getElementById('termsCommon'),ex=document.getElementById('termsExtra');cm.innerHTML='';ex.innerHTML='';var sup=supportedTerms(SVC.type,SVC.mode);if(!sup.length)sup=null;function disabled(t){return sup?(sup.indexOf(t)<0):false;}function mk(t){var e=document.createElement('span');var dis=disabled(t);e.className='term-chip'+(dis?' disabled':'');e.dataset.v=t;e.textContent=t;if(dis){e.title='当前运输方式不支持该条款';}else{e.onclick=function(){selTerm(t);};}return e;}var all=[];c.dirs.forEach(function(o){c.dirs.forEach(function(d){all.push(o+'-'+d);});});var sorted=all.map(function(t,i){return {t:t,i:i,dis:disabled(t),ci:c.common.indexOf(t)};}).sort(function(a,b){if(a.dis!==b.dis)return a.dis-b.dis;var ka=a.ci>=0?a.ci:1000+a.i,kb=b.ci>=0?b.ci:1000+b.i;return ka-kb;}).map(function(x){return x.t;});var mainCount=c.common.length||5;sorted.forEach(function(t,idx){(idx<mainCount?cm:ex).appendChild(mk(t));});ex.classList.remove('show');var mb=document.getElementById('termsMoreBtn');mb.textContent='更多 ▾';mb.style.display=sorted.length>mainCount?'':'none';}
+var TERM_DESC={CY:'集装箱堆场',Door:'门点/仓库',CFS:'集拼站/货运站',RAMP:'铁路场站',Airport:'机场'};
+function getTermDesc(t){var p=t.split('-');if(p.length!==2)return '';return (TERM_DESC[p[0]]||p[0])+' → '+(TERM_DESC[p[1]]||p[1]);}
+function selTerm(t){if(!SVC.type){toast('请先选择物流类型','warn');return;}var _c=document.querySelector('.term-chip[data-v="'+t+'"]');if(_c&&_c.classList.contains('disabled')){toast('当前运输方式不支持该条款','warn');return;}document.querySelectorAll('.term-chip').forEach(function(c){c.classList.remove('selected');});var el=document.querySelector('.term-chip[data-v="'+t+'"]');if(el)el.classList.add('selected');SVC.terms=t;document.getElementById('termDesc').textContent=getTermDesc(t);buildSvcPanels();document.getElementById('svcArea').classList.add('show');}
+function toggleTermsMore(){var e=document.getElementById('termsExtra'),b=document.getElementById('termsMoreBtn');e.classList.toggle('show');b.textContent=e.classList.contains('show')?'收起 ▴':'更多 ▾';}
+
+function buildSvcPanels(){var cfg=getCfg();SERVICE_OPTION_VALUES={};SVC.svc=new Set();GRP.forEach(function(g){var p=document.getElementById('panel-'+g);p.innerHTML='';var _list=(cfg.svcs[g]||[]);_list.forEach(function(s){var o=document.createElement('div');o.className='ms-opt'+(s.lock?' locked checked':'');o.id='opt-'+s.id;var tags='';if(s.lock)tags='<span class="ms-tag-sm auto">必含</span>';else if(s.dep){var parent=GRP.flatMap(function(g2){return(cfg.svcs[g2]||[]);}).find(function(x){return x.id===s.dep;});tags='<span class="ms-tag-sm" style="background:#fff8e1;color:#f57f17;" title="依赖：'+(parent?parent.n:'')+'">需 '+(parent?parent.n.split('/')[0]:'' )+'</span>';}o.innerHTML='<div class="ms-cb">'+(s.lock?'✓':'')+'</div><div class="ms-opt-n">'+s.n+'</div>'+tags;if(!s.lock)o.onclick=function(){tgSvc(s.id);};if(s.lock)SVC.svc.add(s.id);p.appendChild(o);});if(isTypeCustom()&&_list.length===0){var _e=document.createElement('div');_e.className='ms-opt';_e.style.cssText='color:#aaa;cursor:default;';_e.textContent='无可选服务';p.appendChild(_e);}});if(!isTypeCustom())autoCfg();else{renderTrigs();updChain();}}
+
+function toggleMS(g,e){e.stopPropagation();var t=document.getElementById('trig-'+g),p=document.getElementById('panel-'+g),w=p.classList.contains('open');document.querySelectorAll('.ms-trigger.open').forEach(function(x){x.classList.remove('open');});document.querySelectorAll('.ms-panel.open').forEach(function(x){x.classList.remove('open');});if(!w){t.classList.add('open');p.classList.add('open');}}
+
+function tgSvc(id){var o=document.getElementById('opt-'+id);if(!o||o.classList.contains('locked'))return;
+  if(!isTypeCustom()){
+    if(!SVC.terms){toast('请先选择运输条款','warn');return;}
+    if(!SVC.mode){toast('请先选择运输方式','warn');return;}
+  }
+  var cfg=getCfg();var svcDef=GRP.flatMap(function(g){return(cfg.svcs[g]||[]);}).find(function(s){return s.id===id;});
+  if(svcDef&&svcDef.dep&&!SVC.svc.has(svcDef.dep)&&!SVC.svc.has(id)){
+    var parent=GRP.flatMap(function(g){return(cfg.svcs[g]||[]);}).find(function(x){return x.id===svcDef.dep;});
+    toast('请先选择「'+(parent?parent.n:svcDef.dep)+'」','warn');
+    return;
+  }
+  SVC.svc.has(id)?offSvc(id):onSvc(id);cascSvc();renderTrigs();updChain();if(isTypeCustom())renderCustomFloors();}
+
+function onSvc(id){SVC.svc.add(id);var o=document.getElementById('opt-'+id);if(o){o.classList.add('checked');o.querySelector('.ms-cb').textContent='✓';}}
+/* ===== 服务配置规则：由业务 Excel 生成，页面只负责解析与展示 ===== */
+var SERVICE_RULES=fmsStandardRules();
+function termKey(t){return t.split('（')[0].trim().replace(/ to /g,'-');}
+var RULE_INDEX=(function(){var ix={};SERVICE_RULES.forEach(function(r){(ix[r.type]=ix[r.type]||{});(ix[r.type][r.mode]=ix[r.type][r.mode]||{});r.terms.forEach(function(t){ix[r.type][r.mode][termKey(t)]=r;});});return ix;})();
+function supportedTerms(type,mode){var o=((RULE_INDEX[type]||{})[mode])||{};return Object.keys(o);}
+function svcsFor(type,mode,tk){
+  var rule=((RULE_INDEX[type]||{})[mode]||{})[tk];
+  var g2={origin:'origin',intl:'intl',destination:'dest',vas:'vas'};
+  var out={origin:[],intl:[],dest:[],vas:[]};if(!rule)return out;
+  (rule.services||[]).forEach(function(it){
+    var code=g2[it.stageCode];if(!code)return;
+    var id=fmsMapped('standardServiceIds',it.serviceCode);var o={id:id,n:fmsServiceName(it.serviceCode)};
+    if(it.required)o.lock=1;
+    if(it.dependencyServiceCode)o.dep=fmsMapped('standardServiceIds',it.dependencyServiceCode);
+    out[code].push(o);
+  });
+  return out;
+}
+
+function getCfg(){
+  if(isTypeCustom())return {modes:[],dirs:[],common:[],svcs:customAllowedSvcs()};
+  var b=SVC_CFG[SVC.type];if(!b)return b;
+  if(RULE_INDEX[SVC.type])return {modes:b.modes,dirs:b.dirs,common:b.common,svcs:svcsFor(SVC.type,SVC.mode,SVC.terms)};
+  return b;
+}
+function offSvc(id){SVC.svc.delete(id);clearServiceOptionValues(id);var o=document.getElementById('opt-'+id);if(o){o.classList.remove('checked');o.querySelector('.ms-cb').textContent='';}var c=getCfg();GRP.flatMap(function(g){return(c.svcs[g]||[]);}).filter(function(s){return s.dep===id;}).forEach(function(s){offSvc(s.id);});}
+
+function autoCfg(){var c=SVC_CFG[SVC.type];var parts=SVC.terms.split('-');var o=parts[0],d=parts[1];GRP.flatMap(function(g){return(getCfg().svcs[g]||[]);}).filter(function(s){return !s.lock;}).forEach(function(s){SVC.svc.delete(s.id);var o2=document.getElementById('opt-'+s.id);if(o2){o2.classList.remove('checked','disabled');o2.querySelector('.ms-cb').textContent='';}});if(!RULE_INDEX[SVC.type]){if(o==='Door'){onSvc('exc');onSvc('trailer');}if(o==='CFS'){onSvc('owh');onSvc('exc');}if(o==='CY'||o==='RAMP'||o==='Airport')onSvc('exc');if(d==='Door'){onSvc('imc');onSvc('dlv');}if(d==='CFS'){onSvc('imc');onSvc('dwh');}if(d==='CY'||d==='RAMP'||d==='Airport')onSvc('imc');}cascSvc();renderTrigs();updChain();}
+
+function cascSvc(){var c=getCfg();GRP.flatMap(function(g){return(c.svcs[g]||[]);}).forEach(function(s){if(s.lock)return;if(s.cas&&SVC.svc.has(s.cas)&&!SVC.svc.has(s.id))onSvc(s.id);});}
+
+function validateSvcDeps(){var c=getCfg();if(!c)return[];var errs=[];
+  GRP.flatMap(function(g){return(c.svcs[g]||[]);}).forEach(function(s){
+    if(s.dep&&SVC.svc.has(s.id)&&!SVC.svc.has(s.dep)){
+      var parent=GRP.flatMap(function(g2){return(c.svcs[g2]||[]);}).find(function(x){return x.id===s.dep;});
+      errs.push('「'+s.n+'」需要先选择「'+(parent?parent.n:s.dep)+'」');
+    }
+  });return errs;}
+
+/* ===== 标准模式：服务 → 字段必填映射 =====
+   规则：勾选某服务点亮其字段必填；必填态取最严(并集)——
+   每次服务变化全量重算，任一勾选服务要求即必填，取消不误撤他服务仍需的必填。
+   仅标准模式生效；自选模式清空动态必填。 */
+var REQUIRED_MAP={
+  imc:['selImporter']   // 申报及进口清关 → 进口商必填
+};
+function setFieldRequired(fieldId,on){
+  var el=document.getElementById(fieldId);if(!el)return;
+  var box=el.closest('.fi')||el.closest('.row')||el.parentElement;
+  var lbl=box?box.querySelector('.fl,.rl,.ptitle'):null;if(!lbl)return;
+  var mark=lbl.querySelector('.rq.req-dyn');
+  if(on){
+    if(!mark){mark=document.createElement('span');mark.className='rq req-dyn';mark.textContent='*';mark.style.marginRight='4px';lbl.insertBefore(mark,lbl.firstChild);}
+    el.setAttribute('required','required');
+  }else{
+    if(mark)mark.remove();
+    el.removeAttribute('required');
+  }
+}
+function applyRequiredByServices(){
+  var union={};
+  if(!isTypeCustom()){
+    Object.keys(REQUIRED_MAP).forEach(function(sid){
+      if(SVC.svc.has(sid))REQUIRED_MAP[sid].forEach(function(fid){union[fid]=true;});
+    });
+  }
+  // 全量重算：所有受管字段先按并集结果统一设置
+  var managed={};Object.keys(REQUIRED_MAP).forEach(function(sid){REQUIRED_MAP[sid].forEach(function(fid){managed[fid]=true;});});
+  Object.keys(managed).forEach(function(fid){setFieldRequired(fid,!!union[fid]);});
+}
+
+function renderTrigs(){var c=getCfg();GRP.forEach(function(g){var t=document.getElementById('trig-'+g);if(!t)return;var items=c.svcs[g]||[];var sel=items.filter(function(s){return SVC.svc.has(s.id);});var b=document.getElementById('badge-'+g);if(b){b.textContent=sel.length;sel.length>0?b.classList.add('active'):b.classList.remove('active');}if(!sel.length){t.innerHTML='<span class="ms-ph">选择服务...</span>';}else{t.innerHTML=sel.map(function(s){return '<span class="ms-tag'+(s.lock?' locked':'')+'">'+s.n.split('/')[0].trim()+(s.lock?'':'<span class="ms-x" onclick="event.stopPropagation();rmTag(\''+s.id+'\')">&times;</span>')+'</span>';}).join('');}});applyRequiredByServices();renderServiceOptions();if(typeof applyLock==='function')applyLock();refreshSectionSummary('sec1');}
+
+function rmTag(id){offSvc(id);cascSvc();renderTrigs();updChain();if(isTypeCustom())renderCustomFloors();}
+
+function updChain(){var c=getCfg();if(!c)return;var bar=document.getElementById('chainBar'),tx=document.getElementById('chainTx');var all=GRP.flatMap(function(g){return(c.svcs[g]||[]);});var ord=all.filter(function(s){return SVC.svc.has(s.id);});if(ord.length<=1){bar.classList.remove('show');return;}bar.classList.add('show');tx.innerHTML=ord.map(function(s,i){return '<span class="ch-node">'+s.n.split('/')[0].trim()+'</span>'+(i<ord.length-1?'<span class="ch-arr">→</span>':'');}).join('');}
+
+/* ===== 单据类型切换 ===== */
+function switchDocType(type){
+  document.querySelectorAll('.ds-btn').forEach(function(b){b.classList.toggle('active',b.dataset.doc===type);});
+  var bizSecs=document.querySelectorAll('#sec1,#sec2,#sec3,#sec4,#sec5,#sec6');
+  var settleSec=document.getElementById('secSettle');
+  var navSteps=document.getElementById('navSteps');
+  if(type==='settle'){
+    bizSecs.forEach(function(s){s.classList.add('biz-hide');});
+    settleSec.classList.remove('biz-hide');
+    navSteps.style.display='none';
+  } else {
+    bizSecs.forEach(function(s){s.classList.remove('biz-hide');});
+    settleSec.classList.add('biz-hide');
+    navSteps.style.display='flex';
+  }
+  var contentEl=document.querySelector('.content');
+  contentEl.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ===== 接货地→起运港联动 ===== */
+function onReceipt(){
+  var v=document.getElementById('receipt').value;if(!v)return;
+  var pol=document.getElementById('pol');
+  if(pol.value)return;
+  var map={NINGBO:'CNNGB',SHANGHAI:'CNSHA',SHENZHEN:'CNYTN',YIWU:'CNNGB',QINGDAO:'CNQIN',XIAMEN:'CNXMN'};
+  if(map[v]){pol.value=map[v];toast('起运港已自动匹配','ok');}
+}
+
+/* ===== 收货人地址填充 ===== */
+function fillConsignee(v){
+  var d={c1:{addr:'TO ORDER OF SHIPPER'},c2:{addr:'BEST BUY DISTRIBUTION CENTER\n7601 PENN AVE SOUTH\nRICHFIELD, MN 55423, USA'},c3:{addr:'AMAZON.COM SERVICES LLC\nFBA: ONT8\n24300 NANDINA AVE\nMORENO VALLEY, CA 92551, USA'},c4:{addr:'WALMART DC #6057\n3100 WINDMILL RD\nSULFOLK, VA 23435, USA'}};
+  var x=d[v];
+  document.getElementById('consigneeAddr').value=x?x.addr:'';
+}
+
+/* ===== 合约/客户 ===== */
+function fillContract(v){
+  var d={c1:{g:'GRP-MAEU-ASIA-USWC',t:'SC (Service Contract)',a:'WYDGROUP LOGISTICS',c:'FAK (Freight All Kinds)',k:'k1'},c2:{g:'BLT-COSU-TP2-2026',t:'NAC',a:'WYDGROUP NINGBO',c:'TEXTILES & GARMENTS',k:'k1'},c3:{g:'GRP-ONEY-FE4',t:'FAK',a:'WYDGROUP SHENZHEN',c:'ELECTRONICS',k:'k3'},c4:{g:'BLT-HLCU-AS1-Q3',t:'SC (Service Contract)',a:'WYDGROUP LOGISTICS',c:'MACHINERY PARTS',k:'k2'}};
+  var x=d[v];
+  if(x){document.getElementById('grp').value=x.g;document.getElementById('nacc').value=x.a;document.getElementById('cmdt').value=x.c;var ct=document.getElementById('ctype');[...ct.options].forEach(function(o){if(o.text===x.t)ct.value=o.value||o.text;});document.getElementById('customer').value=x.k;fillCustomer(x.k,true);toast('合约数据已自动带入','ok');}
+  else{document.getElementById('grp').value='';document.getElementById('nacc').value='';document.getElementById('cmdt').value='';document.getElementById('ctype').value='SPOT';}
+}
+function fillCustomer(v,fromContract){
+  var d={k1:{s:'s1',sa:'NINGBO SANHE TEXTILE IMP. & EXP. CO., LTD\nNO. 288 JIAHUI STREET, YINZHOU DISTRICT\nNINGBO, ZHEJIANG 315100, CHINA'},k2:{s:'s2',sa:'SHANGHAI HUAYI ELECTRONICS CO., LTD\n888 ZHANGJIANG HI-TECH PARK\nSHANGHAI 201203, CHINA'},k3:{s:'s3',sa:'DJI TECHNOLOGY CO., LTD\n14TH FLOOR, WEST WING, SKYWORTH\nSHENZHEN 518057, CHINA'},k4:{s:'s1',sa:'YIWU RUIDA TRADING CO., LTD\nINTL TRADE CITY, YIWU, ZHEJIANG, CHINA'}};
+  var x=d[v];if(x){document.getElementById('shipper').value=x.s;document.getElementById('shipperAddr').value=x.sa;if(!fromContract)toast('客户数据已带入','ok');}
+}
+
+/* ===== 第3步：中转 ===== */
+var tsIdx=0;
+function addTransit(){
+  tsIdx++;var list=document.getElementById('transitList');
+  var row=document.createElement('div');row.className='ts-row';
+  row.innerHTML='<div class="fi"><div class="fl">中转港</div><select class="fc"><option value="">请选择</option><option>KRPUS - 釜山</option><option>SGSIN - 新加坡</option><option>TWKHH - 高雄</option><option>MYTPP - 丹戎帕拉帕斯</option></select></div><div class="fi"><div class="fl">船名/航次 (Vessel / Voyage)</div><div class="ip"><input type="text" class="fc" placeholder="船名"><input type="text" class="fc" placeholder="航次" style="max-width:60px;"></div></div><div class="fi"><div class="fl">ETD</div><input type="date" class="fc"></div><div class="fi"><div class="fl">ETA</div><input type="date" class="fc"></div><div style="display:flex;align-items:end;padding-bottom:2px;"><button class="db" onclick="this.closest(\'.ts-row\').remove()" style="font-size:16px;">✕</button></div>';
+  list.appendChild(row);
+}
+
+/* ===== 第4步：货物 ===== */
+var ci=1;
+function addCtn(){ci++;var tb=document.querySelector('#ctnTbl tbody');var tr=document.createElement('tr');tr.innerHTML='<td>'+ci+'</td><td><select><option>20GP</option><option>40GP</option><option selected>40HQ</option><option>45HQ</option></select></td><td><input type="number" value="1" oninput="updCtn()"></td><td><select><option selected>COC (船东箱)</option><option>SOC (自有箱)</option></select></td><td><input type="text" placeholder="待分配"></td><td><input type="text" placeholder="待封箱"></td><td><input type="number" value="3800"></td><td><button class="db" onclick="delCtn(this)">✕</button></td>';tb.appendChild(tr);updCtn();}
+function delCtn(b){var tb=document.querySelector('#ctnTbl tbody');if(tb.rows.length<=1){toast('至少保留一行','warn');return;}b.closest('tr').remove();[...tb.rows].forEach(function(r,i){r.cells[0].textContent=i+1;});ci=tb.rows.length;updCtn();}
+function updCtn(){var t=0;document.querySelectorAll('#ctnTbl tbody tr').forEach(function(r){t+=parseInt(r.cells[2].querySelector('input')?.value||0);});document.getElementById('ctnTot').textContent=t;refreshSectionSummary('sec4');}
+function addHs(){var d=document.createElement('div');d.className='hr';d.innerHTML='<input type="text" class="fc" placeholder="英文品名" style="flex:2;"><input type="text" class="fc" placeholder="HS CODE" style="flex:1;"><button class="db" onclick="this.parentElement.remove()" style="font-size:12px;">✕</button>';document.getElementById('hsRows').appendChild(d);}
+function calc(){var p=parseFloat(document.getElementById('pkgs').value)||0,g=parseFloat(document.getElementById('gw').value)||0,c=parseFloat(document.getElementById('cbm').value)||0;document.getElementById('sp').textContent=p.toLocaleString();document.getElementById('sg').textContent=g.toLocaleString();document.getElementById('sc').textContent=c.toFixed(2);document.getElementById('sa').textContent=p>0?(g/p).toFixed(1):'-';}
+
+/* ===== 第6步：备注 ===== */
+function addIns(){var s=document.getElementById('opIns');if(!s.value)return;var l=document.getElementById('insList');if([...l.children].some(function(c){return c.dataset.v===s.value;})){toast('已添加','warn');return;}var t=document.createElement('span');t.className='tag';t.dataset.v=s.value;t.innerHTML=s.value+' <span class="tx" onclick="this.parentElement.remove()">×</span>';l.appendChild(t);s.value='';}
+var noteIdx=1;
+function addNote(){
+  var input=document.getElementById('noteInput');var text=input.value.trim();if(!text)return;
+  var now=new Date();var ts=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0')+' '+String(now.getHours()).padStart(2,'0')+':'+String(now.getMinutes()).padStart(2,'0');
+  noteIdx++;var item=document.createElement('div');item.className='note-item';
+  item.innerHTML='<div class="note-icon">🔒</div><div class="note-body"><div class="note-text">'+text.replace(/</g,'&lt;')+'</div><div class="note-meta"><span class="note-status s-pending">待处理</span> 李龙久 · '+ts+'</div><div class="note-actions"><span class="note-act" onclick="noteStatus(this,\'progress\')">📋 进行中</span><span class="note-act act-done" onclick="noteStatus(this,\'done\')">✅ 已完成</span><span class="note-act act-del" onclick="delNote(this)">🗑 删除</span></div></div>';
+  document.getElementById('noteList').appendChild(item);input.value='';refreshSectionSummary('sec6');
+}
+function delNote(el){if(confirm('确定删除此笔记？')){el.closest('.note-item').remove();refreshSectionSummary('sec6');}}
+function noteStatus(el,status){
+  var item=el.closest('.note-item'),badge=item.querySelector('.note-status');
+  if(status==='done'){item.classList.add('done');badge.className='note-status s-done';badge.textContent='已完成';item.querySelector('.note-icon').textContent='✅';}
+  else if(status==='progress'){item.classList.remove('done');badge.className='note-status s-progress';badge.textContent='进行中';item.querySelector('.note-icon').textContent='🔒';}
+  else{item.classList.remove('done');badge.className='note-status s-pending';badge.textContent='待处理';item.querySelector('.note-icon').textContent='🔒';}
+  refreshSectionSummary('sec6');
+}
+
+/* ===== 全屏切换 ===== */
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(function(){});
+    document.body.classList.add('fullscreen');
+  } else {
+    document.exitFullscreen().catch(function(){});
+    document.body.classList.remove('fullscreen');
+  }
+  updFsIcon();
+}
+function updFsIcon(){
+  var on=document.body.classList.contains('fullscreen');
+  var btn=document.getElementById('fsBtn');
+  btn.title=on?'退出全屏 (ESC)':'全屏模式';
+  btn.innerHTML=on
+    ?'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5,1 5,5 1,5"/><polyline points="11,5 15,5 11,1"/><polyline points="11,15 11,11 15,11"/><polyline points="1,11 5,11 5,15"/></svg>'
+    :'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="1,5 1,1 5,1"/><polyline points="11,1 15,1 15,5"/><polyline points="15,11 15,15 11,15"/><polyline points="5,15 1,15 1,11"/></svg>';
+}
+document.addEventListener('fullscreenchange',function(){
+  if(!document.fullscreenElement){document.body.classList.remove('fullscreen');}
+  updFsIcon();
+});
+
+/* ===== 文件导入（全屏确认） ===== */
+function triggerFileImport(){
+  if(document.fullscreenElement){
+    showFsImportConfirm();
+    return;
+  }
+  document.getElementById('rpFileInput').click();
+}
+function showFsImportConfirm(){
+  var mask=document.getElementById('fsImportMask');
+  if(!mask){
+    mask=document.createElement('div');mask.id='fsImportMask';
+    mask.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9999;display:flex;align-items:center;justify-content:center;';
+    var box=document.createElement('div');
+    box.style.cssText='background:#fff;border-radius:8px;padding:20px 28px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.25);';
+    box.innerHTML='<div style="font-size:12px;color:#333;line-height:1.5;margin-bottom:14px;white-space:nowrap;">浏览器安全限制，选择文件将暂时退出全屏，导入后可再次全屏</div>'
+      +'<div style="display:flex;gap:10px;justify-content:center;">'
+      +'<button id="fsImportCancel" style="padding:5px 18px;border:1px solid #ddd;border-radius:4px;background:#fff;color:#666;cursor:pointer;font-size:12px;">取消</button>'
+      +'<button id="fsImportOk" style="padding:5px 18px;border:none;border-radius:4px;background:var(--accent);color:#fff;cursor:pointer;font-size:12px;">继续导入</button>'
+      +'</div>';
+    mask.appendChild(box);
+    document.body.appendChild(mask);
+    document.getElementById('fsImportCancel').onclick=function(){mask.style.display='none';};
+    document.getElementById('fsImportOk').onclick=function(){mask.style.display='none';document.getElementById('rpFileInput').click();};
+  } else {
+    mask.style.display='flex';
+  }
+}
+
+/* ===== 通用 ===== */
+function tglSec(hd){hd.classList.toggle('collapsed');hd.nextElementSibling.classList.toggle('collapsed');}
+function gv(id){var el=document.getElementById(id);return el&&el.value&&el.value.trim()!=='';}
+
+function doSave(){
+  var depErrs=validateSvcDeps();
+  if(depErrs.length){scrollToSec('sec1');toast('服务配置：'+depErrs[0],'warn');return;}
+  var optionErrors=validateServiceOptions();
+  if(optionErrors.length){showServiceOptionError(optionErrors[0]);return;}
+  // 提交前：自选模式拦截（非ok 一律锁定并阻止提交）
+  if(isTypeCustom()){
+    var r=checkSelection();
+    if(r.status!=='ok'){
+      applyLock();
+      document.getElementById('dsLock').scrollIntoView({behavior:'smooth',block:'start'});
+      toast(r.status==='match'?('请先切换到【'+r.label+'】标准模式再提交'):(r.reason||'该服务组合暂不支持，请调整所选服务'),'warn',3600);
+      return;
+    }
+  }
+  toast('订单保存成功！单号 ORD-2026-08-0531','ok');
+}
+
+/* ===== 服务→楼层配置（Mock，实际由后台维护） ===== */
+/* 可复用字段模板（同类楼层共用一套表单，名称按实际服务动态生成） */
+var FT_TRAILER=[
+  {l:'提货/交接地址 (Location)',type:'text',req:1},
+  {l:'联系人 (Contact)',type:'text',req:1},
+  {l:'联系电话 (Phone)',type:'text',req:1},
+  {l:'计划日期 (Date)',type:'date'},
+  {l:'车型要求 (Vehicle Type)',type:'select',options:['4.2米','6.8米','7.6米','9.6米','13.5米','20GP拖车','40HQ拖车','其他']},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+var FT_EXPORT=[
+  {l:'HS CODE',type:'text',req:1},
+  {l:'报关类型 (Customs Type)',type:'select',options:['一般贸易','跨境电商9610','跨境电商9710/9810','买单报关','暂时进出口','退运'],req:1},
+  {l:'货物中文品名 (Chinese Name)',type:'text',req:1},
+  {l:'货物英文品名 (English Name)',type:'text',req:1},
+  {l:'件数 (Quantity)',type:'number',req:1},
+  {l:'毛重 KG (Gross Weight)',type:'number',req:1},
+  {l:'体积 CBM (Volume)',type:'number'},
+  {l:'报关资料 (Customs Doc.)',type:'file',req:1},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+var FT_INWH=[
+  {l:'仓库/操作地址 (Location)',type:'text',req:1},
+  {l:'操作类型 (Operation)',type:'select',options:['换标/贴标','贴唛头','打托/组托','拆托','加固/绑扎','分拣/分箱','清点/盘点','拍照留档','测量测重'],req:1},
+  {l:'件数 (Quantity)',type:'number',req:1},
+  {l:'操作要求 (Requirements)',type:'textarea'},
+  {l:'相关文件 (Documents)',type:'file'}
+];
+var FT_STORAGE=[
+  {l:'仓库地址 (Warehouse)',type:'text',req:1},
+  {l:'入库日期 (Inbound Date)',type:'date'},
+  {l:'预计出库日期 (Outbound Date)',type:'date'},
+  {l:'件数 (Quantity)',type:'number',req:1},
+  {l:'体积 CBM (Volume)',type:'number'},
+  {l:'暂存要求 (Requirements)',type:'textarea'}
+];
+var FT_TRANSPORT=[
+  {l:'起运地 (Origin)',type:'text',req:1},
+  {l:'目的地 (Destination)',type:'text',req:1},
+  {l:'贸易术语 (Incoterms)',type:'select',options:['FOB','CIF','CFR','EXW','DDP','DAP','FCA','CPT','CIP'],req:1},
+  {l:'货物描述 (Cargo Desc.)',type:'textarea',req:1},
+  {l:'件数 (Quantity)',type:'number',req:1},
+  {l:'毛重 KG (Gross Weight)',type:'number',req:1},
+  {l:'体积 CBM (Volume)',type:'number',req:1},
+  {l:'包装方式 (Package Type)',type:'select',options:['纸箱','木箱','托盘','编织袋','裸装','铁桶','吨袋']},
+  {l:'期望出发日 (ETD)',type:'date'},
+  {l:'期望到达日 (ETA)',type:'date'},
+  {l:'特殊要求 (Special Req.)',type:'select',options:['无','危险品','冷藏/温控','超尺寸/超重','加急','指定承运人','指定船期/航班']},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+var FT_IMPORT=[
+  {l:'目的国/地区 (Destination)',type:'text',req:1},
+  {l:'清关类型 (Clearance Type)',type:'select',options:['正式报关','简易报关','T1转关','邮寄清关','行邮税'],req:1},
+  {l:'HS CODE',type:'text',req:1},
+  {l:'收货人 (Consignee)',type:'text',req:1},
+  {l:'VAT/EORI',type:'text'},
+  {l:'装箱单 (Packing List)',type:'file',req:1},
+  {l:'发票 (Invoice)',type:'file',req:1},
+  {l:'其他清关文件 (Other Doc.)',type:'file'},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+var FT_LOAD=[
+  {l:'操作地址 (Location)',type:'text',req:1},
+  {l:'装箱类型 (Loading Type)',type:'select',options:['整箱装柜','拼箱装柜','散货装车','打托装柜','人工装箱','机械装箱'],req:1},
+  {l:'件数 (Quantity)',type:'number',req:1},
+  {l:'体积 CBM (Volume)',type:'number'},
+  {l:'装箱要求 (Requirements)',type:'textarea'},
+  {l:'相关文件 (Documents)',type:'file'}
+];
+var FT_DELIVERY=[
+  {l:'派送地址 (Delivery Address)',type:'text',req:1},
+  {l:'联系人 (Contact)',type:'text',req:1},
+  {l:'联系电话 (Phone)',type:'text',req:1},
+  {l:'派送方式 (Delivery Type)',type:'select',options:['送货上门','自提','预约配送','FBA入仓']},
+  {l:'预约时间 (Appointment)',type:'date'},
+  {l:'派送要求 (Requirements)',type:'select',options:['无','加急','预约时段','尾板车','叉车卸货','轻拿轻放','不可叠放']},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+var FT_INSURANCE=[
+  {l:'货物描述 (Cargo Desc.)',type:'text',req:1},
+  {l:'币种 (Currency)',type:'select',options:['CNY','USD','EUR','GBP','JPY','HKD'],req:1},
+  {l:'货值 (Cargo Value)',type:'number',req:1},
+  {l:'投保金额 (Insured Amount)',type:'number',req:1},
+  {l:'投保险种 (Coverage)',type:'select',options:['一切险','水渍险','平安险','战争险','一切险+战争险']},
+  {l:'保单/协议 (Policy)',type:'file'}
+];
+var FT_DOC=[
+  {l:'起运地 (Origin)',type:'text'},
+  {l:'目的地 (Destination)',type:'text'},
+  {l:'单证类型 (Document Type)',type:'select',options:['产地证 CO','FORM A','FORM E','FORM F','FORM RCEP','AMS','ENS','ISF','电放','HBL','MAWB'],req:1},
+  {l:'相关文件 (Documents)',type:'file'},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+var FT_TAX=[
+  {l:'目的国/地区 (Destination)',type:'text',req:1},
+  {l:'税号/VAT (Tax No.)',type:'text',req:1},
+  {l:'税种 (Tax Type)',type:'select',options:['关税 Duty','进口增值税 VAT','消费税','关税+VAT'],req:1},
+  {l:'预估税额 (Est. Amount)',type:'number'},
+  {l:'币种 (Currency)',type:'select',options:['CNY','USD','EUR','GBP','JPY','HKD']},
+  {l:'相关文件 (Documents)',type:'file'},
+  {l:'备注 (Remark)',type:'textarea'}
+];
+
+/* ===== 自选服务 → Section 编排规则（Mock，实际可由后台维护） =====
+   此处只保存服务与 Section ID 的关系，不包含 Section 的字段和渲染细节。 */
+SECTION_COMPOSITION_RULES.custom.services=fmsSelfSectionConfig();
+
+/* ===== 可插拔 Section 注册 =====
+   每个插件独立声明标题、内容与渲染方法；组合器不读取插件内部字段。 */
+function createFieldSectionPlugin(def){
+  return registerSectionPlugin({
+    id:def.id,
+    kind:'dynamic',
+    title:def.title||'',
+    fields:def.fields,
+    getSummary:def.getSummary||function(section){return joinSectionSummary([
+      dynamicFieldValue(section,0,'服务要求待确认'),dynamicFieldValue(section,1,'1')
+    ]);},
+    createElement:function(context){
+      return createSectionElement(def.id,context.title||def.title||'',def.fields);
+    }
+  });
+}
+[
+  {id:'floorOTrailer',title:'拖车 · 起运地 (Origin Drayage)',fields:FT_TRAILER,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'宁波市鄞州区'),compactDateTime(dynamicFieldValue(section,3,'2026-08-24')),dynamicFieldValue(section,4,'40HQ拖车')
+  ]);}},
+  {id:'floorExport',fields:FT_EXPORT,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,1,'一般贸易'),'HS '+dynamicFieldValue(section,0,'620443'),dynamicFieldValue(section,2,'女式上衣'),
+    '货物：'+joinMetricSummary([compactNumber(dynamicFieldValue(section,4,'120'))+'件',compactNumber(dynamicFieldValue(section,5,'3800'))+' KG'])
+  ]);}},
+  {id:'floorInWh',fields:FT_INWH,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'宁波仓'),dynamicFieldValue(section,1,'换标/贴标'),compactNumber(dynamicFieldValue(section,2,'120'))+'件'
+  ]);}},
+  {id:'floorOStorage',title:'仓储/货物暂存 · 起运地 (Origin Storage)',fields:FT_STORAGE,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'宁波仓'),compactDateTime(dynamicFieldValue(section,1,'2026-08-20'))+' → '+compactDateTime(dynamicFieldValue(section,2,'2026-08-24')),
+    '货物：'+joinMetricSummary([compactNumber(dynamicFieldValue(section,3,'120'))+'件',compactNumber(dynamicFieldValue(section,4,'56.5'))+' CBM'])
+  ]);}},
+  {id:'floorTransport',fields:FT_TRANSPORT,getSummary:function(section){return joinSectionSummary([
+    routeSummary(dynamicFieldValue(section,0,'NINGBO'),dynamicFieldValue(section,1,'LOS ANGELES'),'→'),dynamicFieldValue(section,2,'FOB'),
+    '货物：'+joinMetricSummary([compactNumber(dynamicFieldValue(section,4,'120'))+'件',compactNumber(dynamicFieldValue(section,5,'3800'))+' KG',compactNumber(dynamicFieldValue(section,6,'56.5'))+' CBM'])
+  ]);}},
+  {id:'floorImport',fields:FT_IMPORT,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'USA'),dynamicFieldValue(section,1,'正式报关'),'HS '+dynamicFieldValue(section,2,'620443'),dynamicFieldValue(section,3,'Best Buy Distribution Center')
+  ]);}},
+  {id:'floorDTrailer',title:'拖车 · 目的地 (Destination Drayage)',fields:FT_TRAILER,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'Los Angeles, CA'),compactDateTime(dynamicFieldValue(section,3,'2026-09-12')),dynamicFieldValue(section,4,'40HQ拖车')
+  ]);}},
+  {id:'floorLoad',fields:FT_LOAD,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'宁波仓'),dynamicFieldValue(section,1,'整箱装柜'),
+    '货物：'+joinMetricSummary([compactNumber(dynamicFieldValue(section,2,'120'))+'件',compactNumber(dynamicFieldValue(section,3,'56.5'))+' CBM'])
+  ]);}},
+  {id:'floorDStorage',title:'仓储/货物暂存 · 目的地 (Destination Storage)',fields:FT_STORAGE,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'Los Angeles Warehouse'),compactDateTime(dynamicFieldValue(section,1,'2026-09-12'))+' → '+compactDateTime(dynamicFieldValue(section,2,'2026-09-15')),
+    '货物：'+joinMetricSummary([compactNumber(dynamicFieldValue(section,3,'120'))+'件',compactNumber(dynamicFieldValue(section,4,'56.5'))+' CBM'])
+  ]);}},
+  {id:'floorDelivery',fields:FT_DELIVERY,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'Best Buy DC, CA'),dynamicFieldValue(section,3,'预约配送'),compactDateTime(dynamicFieldValue(section,4,'2026-09-15')),dynamicFieldValue(section,5,'预约时段')
+  ]);}},
+  {id:'floorInsurance',fields:FT_INSURANCE,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'GARMENTS'),'货值：'+dynamicFieldValue(section,1,'USD')+' '+compactNumber(dynamicFieldValue(section,2,'50000')),
+    '投保：'+dynamicFieldValue(section,1,'USD')+' '+compactNumber(dynamicFieldValue(section,3,'55000')),dynamicFieldValue(section,4,'一切险')
+  ]);}},
+  {id:'floorDoc',fields:FT_DOC,getSummary:function(section){return joinSectionSummary([
+    routeSummary(dynamicFieldValue(section,0,'NINGBO'),dynamicFieldValue(section,1,'LOS ANGELES'),'→'),dynamicFieldValue(section,2,'FORM E')
+  ]);}},
+  {id:'floorTax',fields:FT_TAX,getSummary:function(section){return joinSectionSummary([
+    dynamicFieldValue(section,0,'USA'),dynamicFieldValue(section,1,'US-VAT-001'),dynamicFieldValue(section,2,'关税+VAT'),dynamicFieldValue(section,4,'USD')+' '+compactNumber(dynamicFieldValue(section,3,'3200'))
+  ]);}}
+].forEach(createFieldSectionPlugin);
+
+/* ===== Section 内部的通用字段渲染辅助 ===== */
+function floorFieldHtml(f){
+  var rq=f.req?'<span class="rq">*</span> ':'';
+  var inp='';
+  if(f.type==='text') inp='<input type="text" class="fc" placeholder="请输入">';
+  else if(f.type==='number') inp='<input type="number" class="fc" placeholder="请输入">';
+  else if(f.type==='date') inp='<input type="date" class="fc">';
+  else if(f.type==='textarea') inp='<textarea class="fc" rows="2" placeholder="请输入" style="min-height:32px;"></textarea>';
+  else if(f.type==='select'||f.type==='multiselect'){inp='<select class="fc"><option value="">请选择</option>';(f.options||[]).forEach(function(o){inp+='<option>'+o+'</option>';});inp+='</select>';}
+  else if(f.type==='file') inp='<div class="kv-file-zone"><span class="kv-file-btn" onclick="floorFileClick(this)">📎 上传文件</span><input type="file" style="display:none;" onchange="floorFileAdd(this)" multiple><span class="kv-file-list"></span></div>';
+  else inp='<input type="text" class="fc" placeholder="请输入">';
+  return '<div class="fi"><div class="fl">'+rq+f.l+'</div>'+inp+'</div>';
+}
+
+/* 通用楼层字段模板（未映射服务共用） */
+var GENERIC_FLOOR_FIELDS=[
+  {l:'服务要求 (Requirements)',type:'textarea',req:1},
+  {l:'数量 (Quantity)',type:'number'},
+  {l:'备注 (Remark)',type:'textarea'},
+  {l:'相关文件 (Documents)',type:'file'}
+];
+
+/* 按服务ID取显示名称（自选模式服务字典） */
+function svcNameById(id){
+  var cfg=SVC_CFG.custom,found=null;
+  GRP.forEach(function(g){(cfg.svcs[g]||[]).forEach(function(s){if(s.id===id) found=s.n;});});
+  return found||id;
+}
+
+/* 根据服务配置解析 Section 组合。该函数只返回 Section 描述，不负责渲染。 */
+function resolveCustomSectionComposition(){
+  var composition=[];
+  var coveredSvcs=new Set();
+  SECTION_COMPOSITION_RULES.custom.services.forEach(function(rule){
+    var coveredSel=rule.services.filter(function(sid){return SVC.svc.has(sid);});
+    if(coveredSel.length===0) return;
+    coveredSel.forEach(function(sid){coveredSvcs.add(sid);});
+    var plugin=getSectionPlugin(rule.section);
+    var title=(plugin&&plugin.title)||coveredSel.map(svcNameById).join('、');
+    composition.push({section:rule.section,title:title,services:coveredSel});
+  });
+  // 未配置专用插件的服务仍沿用原逻辑，各自生成一个通用 Section
+  var cfg=SVC_CFG.custom;
+  GRP.forEach(function(g){
+    (cfg.svcs[g]||[]).forEach(function(s){
+      if(!SVC.svc.has(s.id)||coveredSvcs.has(s.id)) return;
+      var pluginId='floorGeneric_'+s.id;
+      if(!getSectionPlugin(pluginId))createFieldSectionPlugin({id:pluginId,title:s.n,fields:GENERIC_FLOOR_FIELDS});
+      composition.push({section:pluginId,title:s.n,services:[s.id]});
+    });
+  });
+  return composition;
+}
+
+function createSectionElement(id,name,fields){
+  var sec=document.createElement('div');
+  sec.className='section cust-floor';
+  sec.id=id;
+  var fieldsHtml=fields.map(floorFieldHtml).join('');
+  sec.innerHTML='<div class="sec-hd" onclick="tglSec(this)"><div class="sec-dot"></div><h3>'+name+'</h3><span class="tgl">▾</span></div>'
+    +'<div class="sec-bd"><div class="fg" style="grid-template-columns:repeat(4,1fr);">'+fieldsHtml+'</div></div>';
+  sec.querySelectorAll('.fi').forEach(function(fi){
+    var ta=fi.querySelector('textarea');
+    var fz=fi.querySelector('.kv-file-zone');
+    if(ta||fz) fi.style.gridColumn='1 / -1';
+  });
+  return sec;
+}
+
+function appendSectionNav(navArea,id,name,num){
+  var shortName=name.split(' (')[0];
+  navArea.innerHTML+='<div class="step-connector cust-nav"></div><div class="step-item cust-nav" data-target="'+id+'" onclick="scrollToSec(\''+id+'\')"><span class="step-num">'+num+'</span> '+shortName+'</div>';
+}
+
+/* 统一组合器：挂载规则解析出的插件，并生成与原来一致的楼层导航。 */
+function renderCustomFloors(){
+  if(typeof applyLock==='function')applyLock();
+  var container=document.getElementById('customFloors');
+  var navArea=document.getElementById('custNavArea');
+  clearCustomSectionComposition();
+  if(!isTypeCustom())return;
+  SECTION_COMPOSITION_RULES.custom.base.forEach(function(id,index){
+    var plugin=getSectionPlugin(id);
+    appendSectionNav(navArea,id,(plugin&&plugin.title)||id,index+2);
+  });
+  var startNum=SECTION_COMPOSITION_RULES.custom.base.length+2;
+  resolveCustomSectionComposition().forEach(function(item,index){
+    var plugin=getSectionPlugin(item.section);
+    if(!plugin||!plugin.createElement)return;
+    container.appendChild(plugin.createElement({title:item.title,services:item.services}));
+    refreshSectionSummary(item.section);
+    appendSectionNav(navArea,item.section,item.title,index+startNum);
+  });
+}
+
+/* 楼层内附件上传 */
+function floorFileClick(btn){btn.parentElement.querySelector('input[type=file]').click();}
+function floorFileAdd(inp){
+  var zone=inp.parentElement;
+  var listEl=zone.querySelector('.kv-file-list');
+  if(!zone._files) zone._files=[];
+  for(var i=0;i<inp.files.length;i++){
+    if(zone._files.length>=5){toast('最多上传5个文件','warn');break;}
+    zone._files.push(inp.files[i]);
+  }
+  inp.value='';
+  floorFileRender(zone);
+}
+function floorFileRender(zone){
+  var listEl=zone.querySelector('.kv-file-list');
+  listEl.innerHTML='';
+  (zone._files||[]).forEach(function(f,i){
+    var ext=f.name.split('.').pop().toLowerCase();
+    var icon=ext==='pdf'?'📄':(['xlsx','xls','csv'].indexOf(ext)>=0?'📊':(['doc','docx'].indexOf(ext)>=0?'📝':'📎'));
+    listEl.innerHTML+='<span class="kv-file-item">'+icon+' '+f.name+'<span class="kfx" onclick="floorFileDel(this,'+i+')">&times;</span></span>';
+  });
+  var btn=zone.querySelector('.kv-file-btn');
+  if(btn) btn.style.display=(zone._files||[]).length>=5?'none':'';
+}
+function floorFileDel(el,i){
+  var zone=el.closest('.kv-file-zone');
+  zone._files.splice(i,1);
+  floorFileRender(zone);
+}
+
+/* ===== 智能匹配标准服务 ===== */
+var TYPE_LABELS={ocean:'海运 (Ocean)',air:'空运 (Air)',land:'陆运 (Land)',express:'快递 (Express)'};
+var _matchHintShown=false; // 首次录入只提示一次
+var _matchHintDismissed=false; // 用户手动关闭后不再弹
+var _matchedType=null; // 当前匹配到的标准类型\nvar _matchedLabel=null;
+
+/* ===== 自选服务规则（配置驱动；演示用中文名，正式改ID替换本段即可） ===== */
+var MATCH_RULES=fmsMatchRules();
+// 自选白名单由 Excel 的“允许的自选服务组合”生成，页面只做技术 ID 适配。
+var SELFSELECT_ALLOWED=fmsAllowedRules();
+// 允许组合 + 转标准触发服务的并集 → 决定自选目录；触发服务必须可选，规则才可实际命中。
+var ALLOWED_UNION=(function(){var m={};
+  SELFSELECT_ALLOWED.forEach(function(a){a.services.forEach(function(x){m[x]=1;});});
+  MATCH_RULES.forEach(function(rule){rule.when_contains.forEach(function(x){m[x]=1;});});
+  return m;
+})();
+// 自选目录按规则服务并集过滤，每个分组只保留配置中出现过的服务。
+function customAllowedSvcs(){var out={};GRP.forEach(function(g){out[g]=(SVC_CFG.custom.svcs[g]||[]).filter(function(sv){return ALLOWED_UNION[sv.id];});});return out;}
+var CUSTOM_ID2NAME=(function(){var m={};['origin','intl','dest','vas'].forEach(function(g){(SVC_CFG.custom.svcs[g]||[]).forEach(function(s){m[s.id]=s.n;});});return m;})();
+function selectedNames(){var r=[];SVC.svc.forEach(function(id){r.push(CUSTOM_ID2NAME[id]||id);});return r;}
+
+/* ===== 我的快捷（个人级，最多5个；demo 用 localStorage，正式改为用户偏好接口） ===== */
+var SC_MAX=5,SC_KEY='fms_shortcuts_v1';
+function scLoad(){try{var r=localStorage.getItem(SC_KEY);if(r)return JSON.parse(r);}catch(e){}return null;}
+function scPersist(){try{localStorage.setItem(SC_KEY,JSON.stringify(_shortcuts));}catch(e){}}
+var _shortcuts=scLoad();
+if(!_shortcuts){_shortcuts=[{name:'海运·整柜·门到门',custom:false,type:'ocean',mode:'FCL',terms:'Door-Door',svc:['trailer','ocean_freight','dtrailer','imc']}];scPersist();}
+function scAutoName(st){
+  if(st.custom){var ns=(st.svc||[]).map(function(id){return CUSTOM_ID2NAME[id]||id;});return '自选·'+(ns.slice(0,2).join('+')||'空')+(ns.length>2?'…':'');}
+  var t=({ocean:'海运',air:'空运',land:'陆运',express:'快递'})[st.type]||st.type;
+  var mo=(SVC_CFG[st.type]&&SVC_CFG[st.type].modes.filter(function(m){return m.v===st.mode;})[0]);
+  return t+'·'+(mo?mo.l.replace(/^[A-Z]+\s*/,''):st.mode)+'·'+(st.terms||'');
+}
+function currentState(){return {custom:isTypeCustom(),type:SVC.type,mode:SVC.mode,terms:SVC.terms,svc:Array.from(SVC.svc),serviceOptions:serializableServiceOptions()};}
+var _scPending=null;
+function serviceOptionSignature(values){
+  values=values||{};var parts=[];
+  Object.keys(values).sort().forEach(function(serviceId){
+    Object.keys(values[serviceId]||{}).sort().forEach(function(optionCode){
+      parts.push(serviceId+'.'+optionCode+'='+(values[serviceId][optionCode]||[]).slice().sort().join('+'));
+    });
+  });
+  return parts.join(';');
+}
+function scSig(st){return (st.custom?'C':'S')+'|'+(st.type||'')+'|'+(st.mode||'')+'|'+(st.terms||'')+'|'+(st.svc||[]).slice().sort().join(',')+'|'+serviceOptionSignature(st.serviceOptions);}
+function saveShortcut(){
+  if(_shortcuts.length>=SC_MAX){toast('快捷已满（最多'+SC_MAX+'个），请先删除一个','warn');return;}
+  var st=currentState();
+  // 完整性校验
+  if(st.custom){
+    if((st.svc||[]).length===0){toast('请先选择服务再保存','warn');return;}
+    var r=checkSelection();
+    if(r.status==='match'){toast('该组合需切换到「'+r.label+'」标准，切换后再保存','warn');return;}
+    if(r.status==='block'){toast('所选服务组合暂不支持，无法保存','warn');return;}
+  }else{
+    if(!st.type){toast('请先选择物流类型','warn');return;}
+    if(!st.mode){toast('请先选择运输方式','warn');return;}
+    if(!st.terms){toast('请先选择运输条款','warn');return;}
+    if((st.svc||[]).length===0){toast('当前没有已选服务，无法保存','warn');return;}
+  }
+  var optionErrors=validateServiceOptions();
+  if(optionErrors.length){showServiceOptionError(optionErrors[0]);return;}
+  // 去重
+  var sig=scSig(st);
+  var dup=_shortcuts.filter(function(x){return scSig(x)===sig;})[0];
+  if(dup){toast('该组合已存在快捷「'+dup.name+'」，无需重复创建','warn');return;}
+  _scPending=st;
+  scOpenModal(scAutoName(st));
+}
+function scOpenModal(def){
+  var m=document.getElementById('scModal'),inp=document.getElementById('scNameInp');
+  inp.value=def||'';m.classList.add('show');setTimeout(function(){inp.focus();inp.select();},30);
+}
+function scCloseModal(){document.getElementById('scModal').classList.remove('show');_scPending=null;}
+function scConfirmSave(){
+  if(!_scPending)return;
+  var def=scAutoName(_scPending);
+  var name=(document.getElementById('scNameInp').value||def).trim().slice(0,16)||def;
+  _scPending.name=name;_shortcuts.push(_scPending);scPersist();renderShortcutBar();
+  document.getElementById('scModal').classList.remove('show');_scPending=null;
+  toast('已保存快捷「'+name+'」','ok');
+}
+function delShortcut(i,ev){if(ev)ev.stopPropagation();_shortcuts.splice(i,1);scPersist();renderShortcutBar();}
+function applyShortcut(i){
+  var sc=_shortcuts[i];if(!sc)return;
+  if(sc.custom){
+    document.getElementById('typeCustom').checked=true;onTypeCustom();
+    (sc.svc||[]).forEach(function(id){if(!SVC.svc.has(id))onSvc(id);});
+    restoreServiceOptionValues(sc.serviceOptions);
+    renderTrigs();updChain();renderCustomFloors();if(typeof applyLock==='function')applyLock();
+  }else{
+    var tc=document.querySelector('#typeArea .type-chip[data-v="'+sc.type+'"]');if(tc)selType(tc);
+    var mc=document.querySelector('#modeChips .mode-chip[data-v="'+sc.mode+'"]');if(mc)selMode(mc);
+    if(sc.terms)selTerm(sc.terms);
+    GRP.forEach(function(g){(getCfg().svcs[g]||[]).forEach(function(sv){if(!sv.lock)offSvc(sv.id);});});
+    (sc.svc||[]).forEach(function(id){if(!SVC.svc.has(id))onSvc(id);});
+    restoreServiceOptionValues(sc.serviceOptions);
+    renderTrigs();updChain();if(typeof applyRequiredByServices==='function')applyRequiredByServices();
+  }
+  toast('已应用快捷「'+sc.name+'」','ok');
+}
+var SC_TYPE_ICON={ocean:'🚢',land:'🚛',air:'✈️',express:'📦'};
+function scIcon(sc){return sc.custom?'🧩':(SC_TYPE_ICON[sc.type]||'🚢');}
+var _scDrag=null;
+function scDragStart(i,ev){_scDrag=i;ev.dataTransfer.effectAllowed='move';}
+function scDragOver(ev){ev.preventDefault();ev.dataTransfer.dropEffect='move';}
+function scDrop(i,ev){ev.preventDefault();if(_scDrag===null||_scDrag===i){_scDrag=null;return;}var m=_shortcuts.splice(_scDrag,1)[0];_shortcuts.splice(i,0,m);_scDrag=null;scPersist();renderShortcutBar();}
+function renderShortcutBar(){
+  var chips=document.getElementById('scChips');if(!chips)return;chips.innerHTML='';
+  if(_shortcuts.length===0){chips.innerHTML='<span class="sc-empty">还没有快捷 · 选好服务后点右侧「保存当前」</span>';}
+  else _shortcuts.forEach(function(sc,i){
+    var c=document.createElement('span');c.className='sc-chip'+(sc.custom?' cust':'');c.title=sc.name;c.setAttribute('data-tip',sc.name);
+    c.innerHTML='<span class="sc-name">'+scIcon(sc)+' '+sc.name+'</span><span class="sc-x" onclick="delShortcut('+i+',event)">×</span>';
+    c.onclick=function(ev){if(ev.target.classList.contains('sc-x'))return;applyShortcut(i);};
+    c.draggable=true;
+    c.ondragstart=function(ev){scDragStart(i,ev);};
+    c.ondragover=scDragOver;
+    c.ondrop=function(ev){scDrop(i,ev);};
+    chips.appendChild(c);
+  });
+  var add=document.getElementById('scAdd');if(add)add.disabled=_shortcuts.length>=SC_MAX;
+  var cnt=document.getElementById('scCount');if(cnt)cnt.textContent=_shortcuts.length+'/'+SC_MAX;
+}
+// 统一判定：① match（有序，全部包含即命中）② allowed（整单名称多重集全等）
+function checkSelection(){
+  var ids=[];SVC.svc.forEach(function(x){ids.push(x);});
+  if(ids.length===0) return {status:'ok'};
+  var set={};ids.forEach(function(x){set[x]=1;});
+  for(var i=0;i<MATCH_RULES.length;i++){var r=MATCH_RULES[i];
+    if(r.when_contains.every(function(x){return set[x];})) return {status:'match',type:r.switch_to,label:r.label};
+  }
+  var sel=ids.slice().sort();
+  var ok=SELFSELECT_ALLOWED.some(function(al){var b=al.services.slice().sort();return b.length===sel.length&&b.every(function(v,k){return v===sel[k];});});
+  return ok?{status:'ok'}:{status:'block',reason:'该服务组合暂不支持，请调整所选服务'};
+}
+function applyMatchSwitch(type,label){
+  var chips=document.querySelectorAll('#typeArea .type-chip');
+  chips.forEach(function(c){if(c.dataset.v===type)selType(c);});
+  hideLock();
+  toast('已切换到【'+label+'】标准模式','ok',3000);
+}
+function hideMatchBar(){var h=document.getElementById('matchHint');if(h)h.classList.remove('show');}
+function hideBlockBar(){var h=document.getElementById('blockHint');if(h)h.classList.remove('show');}
+function hideLock(){var l=document.getElementById('dsLock');if(l)l.classList.remove('show');hideMatchBar();hideBlockBar();}
+function doMatchSwitch(){if(_matchedType)applyMatchSwitch(_matchedType,_matchedLabel);}
+// 自选模式：服务变动实时判定 → 下游遮罩锁定（match 蓝条可切换 / block 红条改服务），ok 解锁
+function applyLock(){
+  if(!isTypeCustom()){hideLock();return;}
+  var r=checkSelection();
+  if(r.status==='match'){
+    _matchedType=r.type;_matchedLabel=r.label;
+    document.getElementById('matchTypeName').textContent=r.label;
+    document.getElementById('matchHint').classList.add('show');hideBlockBar();
+    document.getElementById('dsLock').classList.add('show');
+  }else if(r.status==='block'){
+    _matchedType=null;
+    document.getElementById('blockHint').classList.add('show');hideMatchBar();
+    document.getElementById('dsLock').classList.add('show');
+  }else{hideLock();}
+}
+function toast(msg,type,dur){var t=document.getElementById('toastEl');t.textContent=msg;t.className='toast '+type+' show';setTimeout(function(){t.className='toast';},dur||2800);}
+
+function renderTrigsEmpty(){SERVICE_OPTION_VALUES={};GRP.forEach(function(g){var t=document.getElementById('trig-'+g);if(t)t.innerHTML='<span class="ms-ph">选择服务...</span>';var b=document.getElementById('badge-'+g);if(b){b.textContent='0';b.classList.remove('active');}});document.getElementById('chainBar').classList.remove('show');applyRequiredByServices();renderServiceOptions();refreshSectionSummary('sec1');}
+
+/* ===== INIT: pre-render ocean layout without selecting ===== */
+(function(){
+  var c=SVC_CFG.ocean;
+  var mc=document.getElementById('modeChips');mc.innerHTML='';
+  c.modes.forEach(function(m){var e=document.createElement('div');e.className='mode-chip';e.dataset.v=m.v;e.innerHTML='<span class="mc-dot"></span>'+m.l;e.onclick=function(){selMode(e);};mc.appendChild(e);});
+  document.getElementById('modeWrap').classList.add('show');
+  var cm=document.getElementById('termsCommon'),ex=document.getElementById('termsExtra');cm.innerHTML='';ex.innerHTML='';
+  var all=[];c.dirs.forEach(function(o){c.dirs.forEach(function(d){all.push(o+'-'+d);});});
+  all.forEach(function(t){var e=document.createElement('span');e.className='term-chip';e.dataset.v=t;e.textContent=t;e.onclick=function(){selTerm(t);};(c.common.includes(t)?cm:ex).appendChild(e);});
+  document.getElementById('termsMoreBtn').style.display=all.length<=c.common.length?'none':'';
+  document.getElementById('termsArea').classList.add('show');
+  GRP.forEach(function(g){var p=document.getElementById('panel-'+g);p.innerHTML='';(c.svcs[g]||[]).forEach(function(s){var o=document.createElement('div');o.className='ms-opt';o.id='opt-'+s.id;var tags='';if(s.dep){var parent=GRP.flatMap(function(g2){return(c.svcs[g2]||[]);}).find(function(x){return x.id===s.dep;});tags='<span class="ms-tag-sm" style="background:#fff8e1;color:#f57f17;">需 '+(parent?parent.n.split('/')[0]:'')+'</span>';}o.innerHTML='<div class="ms-cb"></div><div class="ms-opt-n">'+s.n+'</div>'+tags;p.appendChild(o);});});
+  renderTrigsEmpty();
+  document.getElementById('svcArea').classList.add('show');
+})();
+
+
+/* ================================================================ */
+/* ===== REFERENCE PANEL (v5 new feature) ========================= */
+/* ================================================================ */
+
+var rpFiles = []; // {id, name, type, blob, url, data}
+var rpActiveFileId = null;
+var rpFileIdCounter = 0;
+var rpPanelOpen = false;
+var rpPanelWidth = 420;
+
+/* Toggle panel */
+function toggleRefPanel(){
+  var panel = document.getElementById('refPanel');
+  var handle = document.getElementById('splitHandle');
+  var btn = document.getElementById('rpToggleBtn');
+  rpPanelOpen = !rpPanelOpen;
+  if(rpPanelOpen){
+    panel.classList.add('open');
+    handle.classList.add('visible');
+    btn.classList.add('active');
+    panel.style.width = rpPanelWidth + 'px';
+  } else {
+    panel.classList.remove('open');
+    handle.classList.remove('visible');
+    btn.classList.remove('active');
+  }
+}
+
+/* Tab switching */
+function switchRpTab(tab){
+  document.querySelectorAll('.rp-tab-i').forEach(function(t){
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  var filesArea = document.getElementById('rpFilesArea');
+  var textArea = document.getElementById('rpTextArea');
+  if(tab === 'files'){
+    filesArea.style.display = 'flex';
+    textArea.classList.remove('active');
+  } else {
+    filesArea.style.display = 'none';
+    textArea.classList.add('active');
+  }
+}
+
+/* Draggable split handle */
+(function(){
+  var handle = document.getElementById('splitHandle');
+  var panel = document.getElementById('refPanel');
+  var content = document.querySelector('.content');
+  var dragging = false;
+
+  handle.addEventListener('mousedown', function(e){
+    e.preventDefault();
+    dragging = true;
+    handle.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+  });
+
+  document.addEventListener('mousemove', function(e){
+    if(!dragging) return;
+    var container = document.querySelector('.split-container');
+    var containerRect = container.getBoundingClientRect();
+    var newPanelWidth = containerRect.right - e.clientX;
+    var contentWidth = containerRect.width - newPanelWidth - 4; // 4 for handle
+    if(newPanelWidth < 300) newPanelWidth = 300;
+    if(contentWidth < 400) newPanelWidth = containerRect.width - 400 - 4;
+    var maxPanel = containerRect.width * 0.6;
+    if(newPanelWidth > maxPanel) newPanelWidth = maxPanel;
+    rpPanelWidth = newPanelWidth;
+    panel.style.width = newPanelWidth + 'px';
+  });
+
+  document.addEventListener('mouseup', function(){
+    if(dragging){
+      dragging = false;
+      handle.classList.remove('dragging');
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    }
+  });
+})();
+
+/* File handling */
+function getFileType(name){
+  var ext = name.toLowerCase().split('.').pop();
+  if(['png','jpg','jpeg','gif','bmp','webp','svg'].indexOf(ext) >= 0) return 'image';
+  if(ext === 'pdf') return 'pdf';
+  if(['xlsx','xls'].indexOf(ext) >= 0) return 'excel';
+  if(ext === 'csv') return 'csv';
+  if(ext === 'docx') return 'word';
+  return 'unknown';
+}
+
+function getFileIcon(type){
+  var icons = {image:'🖼️', pdf:'📄', excel:'📊', csv:'📊', word:'📝', unknown:'📎'};
+  return icons[type] || '📎';
+}
+
+function handleFileSelect(files){
+  if(!files || !files.length) return;
+  for(var i = 0; i < files.length; i++){
+    addFile(files[i]);
+  }
+  document.getElementById('rpFileInput').value = '';
+}
+
+function addFile(file){
+  var type = getFileType(file.name);
+  if(type === 'unknown'){
+    toast('不支持的文件类型: ' + file.name, 'warn');
+    return;
+  }
+  var id = ++rpFileIdCounter;
+  var entry = {id: id, name: file.name, type: type, blob: file, url: null, data: null};
+  rpFiles.push(entry);
+
+  // Create object URL for image/pdf
+  if(type === 'image' || type === 'pdf'){
+    entry.url = URL.createObjectURL(file);
+  }
+
+  // Parse Excel/CSV
+  if(type === 'excel' || type === 'csv'){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      try {
+        var wb = XLSX.read(e.target.result, {type: 'array'});
+        entry.data = wb;
+        if(rpActiveFileId === id) renderFileContent(id);
+      } catch(err){
+        toast('Excel解析失败: ' + err.message, 'warn');
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  // Parse Word
+  if(type === 'word'){
+    var reader = new FileReader();
+    reader.onload = function(e){
+      mammoth.convertToHtml({arrayBuffer: e.target.result}).then(function(result){
+        entry.data = result.value;
+        if(rpActiveFileId === id) renderFileContent(id);
+      }).catch(function(err){
+        toast('Word解析失败: ' + err.message, 'warn');
+      });
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  renderFileTabs();
+  switchToFile(id);
+
+  if(!rpPanelOpen) toggleRefPanel();
+  // Switch to files tab
+  switchRpTab('files');
+}
+
+function showFileCtxMenu(x,y,fileId,fileName){
+  var old=document.getElementById('rftCtxMenu');
+  if(old) old.remove();
+  var menu=document.createElement('div');
+  menu.id='rftCtxMenu';menu.className='rft-ctx';
+  menu.style.left=x+'px';menu.style.top=y+'px';
+  menu.innerHTML='<div class="rft-ctx-item" data-act="close">关闭文件</div>';
+  menu.querySelector('[data-act="close"]').onclick=function(){removeFile(fileId);menu.remove();};
+  document.body.appendChild(menu);
+  setTimeout(function(){
+    document.addEventListener('click',function dismiss(){menu.remove();document.removeEventListener('click',dismiss);},{once:true});
+  },0);
+}
+
+function renderFileTabs(){
+  var container = document.getElementById('rpFileTabs');
+  container.innerHTML = '';
+  rpFiles.forEach(function(f){
+    var tab = document.createElement('div');
+    tab.className = 'rp-file-tab' + (f.id === rpActiveFileId ? ' active' : '');
+    tab.innerHTML = '<span class="rft-icon">' + getFileIcon(f.type) + '</span>' +
+      '<span class="rft-name" title="' + f.name + '">' + f.name + '</span>' +
+      '<span class="rft-x" data-id="' + f.id + '">&times;</span>';
+    tab.addEventListener('click', function(e){
+      if(e.target.classList.contains('rft-x')){
+        removeFile(parseInt(e.target.dataset.id));
+        return;
+      }
+      switchToFile(f.id);
+    });
+    tab.addEventListener('contextmenu', function(e){
+      e.preventDefault();
+      showFileCtxMenu(e.clientX,e.clientY,f.id,f.name);
+    });
+    container.appendChild(tab);
+  });
+}
+
+function switchToFile(id){
+  rpActiveFileId = id;
+  renderFileTabs();
+  renderFileContent(id);
+}
+
+function renderFileContent(id){
+  var viewer = document.getElementById('rpFileViewer');
+  var dropzone = document.getElementById('rpDropzone');
+  var sheetTabs = document.getElementById('rpSheetTabs');
+  sheetTabs.style.display = 'none';
+
+  var entry = rpFiles.find(function(f){return f.id === id;});
+  if(!entry){
+    viewer.style.display = 'none';
+    dropzone.style.display = 'block';
+    return;
+  }
+
+  dropzone.style.display = 'none';
+  viewer.style.display = 'block';
+  viewer.innerHTML = '';
+
+  if(entry.type === 'image'){
+    var img = document.createElement('img');
+    img.src = entry.url;
+    img.alt = entry.name;
+    img.addEventListener('click', function(){
+      img.classList.toggle('zoomed');
+    });
+    viewer.appendChild(img);
+  }
+  else if(entry.type === 'pdf'){
+    var obj = document.createElement('object');
+    obj.data = entry.url;
+    obj.type = 'application/pdf';
+    obj.style.width = '100%';
+    obj.style.height = '100%';
+    obj.style.minHeight = '500px';
+    var fallback = document.createElement('p');
+    fallback.style.padding = '20px';
+    fallback.style.textAlign = 'center';
+    fallback.innerHTML = '无法预览PDF。<a href="' + entry.url + '" target="_blank">点击下载</a>';
+    obj.appendChild(fallback);
+    viewer.appendChild(obj);
+  }
+  else if((entry.type === 'excel' || entry.type === 'csv') && entry.data){
+    var wb = entry.data;
+    // Show sheet tabs if multiple sheets
+    if(wb.SheetNames.length > 1){
+      sheetTabs.style.display = 'flex';
+      sheetTabs.innerHTML = '';
+      wb.SheetNames.forEach(function(name, idx){
+        var st = document.createElement('div');
+        st.className = 'rp-sheet-tab' + (idx === 0 ? ' active' : '');
+        st.textContent = name;
+        st.addEventListener('click', function(){
+          document.querySelectorAll('.rp-sheet-tab').forEach(function(s){s.classList.remove('active');});
+          st.classList.add('active');
+          renderSheet(wb, name, viewer);
+        });
+        sheetTabs.appendChild(st);
+      });
+    }
+    renderSheet(wb, wb.SheetNames[0], viewer);
+  }
+  else if(entry.type === 'word' && entry.data){
+    var div = document.createElement('div');
+    div.style.padding = '12px';
+    div.style.fontSize = '13px';
+    div.style.lineHeight = '1.6';
+    div.innerHTML = entry.data;
+    viewer.appendChild(div);
+  }
+  else {
+    viewer.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-sec);">正在加载...</div>';
+  }
+}
+
+function renderSheet(wb, sheetName, viewer){
+  var ws = wb.Sheets[sheetName];
+  var html = XLSX.utils.sheet_to_html(ws, {editable: false});
+  // Replace table with our class
+  html = html.replace(/<table/g, '<table class="ref-table"');
+  viewer.innerHTML = html;
+}
+
+function removeFile(id){
+  var idx = rpFiles.findIndex(function(f){return f.id === id;});
+  if(idx < 0) return;
+  var entry = rpFiles[idx];
+  if(entry.url) URL.revokeObjectURL(entry.url);
+  rpFiles.splice(idx, 1);
+
+  if(rpActiveFileId === id){
+    if(rpFiles.length > 0){
+      switchToFile(rpFiles[Math.min(idx, rpFiles.length - 1)].id);
+    } else {
+      rpActiveFileId = null;
+      document.getElementById('rpFileViewer').style.display = 'none';
+      document.getElementById('rpDropzone').style.display = 'block';
+      document.getElementById('rpSheetTabs').style.display = 'none';
+    }
+  }
+  renderFileTabs();
+}
+
+/* Drag and drop */
+(function(){
+  var dz = document.getElementById('rpDropzone');
+  var panel = document.getElementById('refPanel');
+
+  ['dragenter','dragover','dragleave','drop'].forEach(function(evt){
+    panel.addEventListener(evt, function(e){e.preventDefault();e.stopPropagation();});
+  });
+
+  panel.addEventListener('dragenter', function(){dz.classList.add('dragover');});
+  panel.addEventListener('dragover', function(){dz.classList.add('dragover');});
+  panel.addEventListener('dragleave', function(e){
+    if(!panel.contains(e.relatedTarget)) dz.classList.remove('dragover');
+  });
+  panel.addEventListener('drop', function(e){
+    dz.classList.remove('dragover');
+    if(e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length){
+      handleFileSelect(e.dataTransfer.files);
+    }
+  });
+})();
+
+/* Clipboard paste for images */
+document.addEventListener('paste', function(e){
+  if(!rpPanelOpen) return;
+  var items = e.clipboardData && e.clipboardData.items;
+  if(!items) return;
+
+  // Check if focus is on an input/textarea (let normal paste work there)
+  var active = document.activeElement;
+  if(active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')){
+    // Allow paste into the text pad
+    return;
+  }
+
+  for(var i = 0; i < items.length; i++){
+    if(items[i].type.indexOf('image/') === 0){
+      e.preventDefault();
+      var blob = items[i].getAsFile();
+      if(blob){
+        var ext = blob.type.split('/')[1] || 'png';
+        var now = new Date();
+        var ts = now.getHours() + '' + now.getMinutes() + '' + now.getSeconds();
+        var file = new File([blob], 'clipboard-' + ts + '.' + ext, {type: blob.type});
+        addFile(file);
+      }
+      break;
+    }
+  }
+});
+renderShortcutBar();
+refreshAllSectionSummaries();
+</script>
+  <!-- 保存快捷 自定义弹窗 -->
+  <div class="modal-mask" id="scModal" onclick="if(event.target===this)scCloseModal()">
+    <div class="modal-box">
+      <div class="modal-hd">保存为快捷</div>
+      <div class="modal-bd">
+        <div class="modal-lb">名称（≤16 字）</div>
+        <input class="modal-inp" id="scNameInp" maxlength="16" placeholder="请输入快捷名称" onkeydown="if(event.key==='Enter')scConfirmSave();if(event.key==='Escape')scCloseModal();">
+      </div>
+      <div class="modal-ft">
+        <button class="modal-btn ghost" onclick="scCloseModal()">取消</button>
+        <button class="modal-btn primary" onclick="scConfirmSave()">保存</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
